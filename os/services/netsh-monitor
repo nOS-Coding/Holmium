@@ -1,0 +1,35 @@
+#!/sbin/openrc-run
+# netsh-monitor — Background network monitor
+# Monitors network connectivity, WireGuard status, and triggers alerts
+
+description="Holmium OS — Network Monitor"
+pidfile="/run/holmium/netsh-monitor.pid"
+command="/usr/bin/python"
+command_args="-c \"from tools.netsh import monitor_run; monitor_run()\""
+command_user="holmium:holmium"
+command_background=true
+
+depend() {
+    need net
+    after holmium-wireguard holmium-backend
+    use logger
+}
+
+start() {
+    ebegin "Starting netsh-monitor"
+    checkpath -d -m 0755 -o holmium:holmium /run/holmium
+    start-stop-daemon --start \
+        --pidfile "$pidfile" \
+        --user "$command_user" \
+        --make-pidfile \
+        --background \
+        --exec "$command" -- $command_args
+    eend $?
+}
+
+stop() {
+    ebegin "Stopping netsh-monitor"
+    start-stop-daemon --stop --pidfile "$pidfile" --retry 10
+    rm -f "$pidfile"
+    eend $?
+}

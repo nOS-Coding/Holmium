@@ -440,6 +440,8 @@ nav {
       <div class="feature-card reveal"><div class="feature-icon">&#9671;</div><div><h4>Companion apps</h4><p>Native macOS (AppKit), Windows (WPF), and Android (Material You) apps with Chat, Dashboard, and Settings. Linux uses the TUI on tty1.</p></div></div>
       <div class="feature-card reveal"><div class="feature-icon">&#10005;</div><div><h4>Zero telemetry</h4><p>No analytics, no tracking, no logging of prompts. Only daily license check transmits your hashed machine ID — nothing else.</p></div></div>
       <div class="feature-card reveal"><div class="feature-icon">&#8634;</div><div><h4>Free updates</h4><p>All updates are free while your subscription is active. Rebuild your ISO anytime. Cancel and keep access until end of billing period.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#9711;</div><div><h4>NAS-ready</h4><p>Built-in WireGuard VPN, Samba/NFS exports, and automated backup tooling. Turn your AI PC into a home server when it's not running models.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#9641;</div><div><h4>Headless mode</h4><p>Run without a monitor. SSH in from any companion app (macOS/Windows/Android). The TUI runs on tty1, but you never need to look at it.</p></div></div>
     </div>
   </section>
 
@@ -477,28 +479,18 @@ nav {
   <section class="section" id="variants">
     <div class="reveal">
       <div class="section-label">Variants</div>
-      <h2>Three ISO builds</h2>
+      <h2>Two ISO builds</h2>
       <p class="sub">Pick the variant that matches your GPU. Each is a bootable ISO with drivers, kernel, and vLLM backend pre-configured.</p>
     </div>
     <div class="variants-grid">
       <div class="variant-card reveal">
-        <h4>NVIDIA Standard</h4>
-        <div class="tag">RTX 5060 — 5070</div>
+        <h4>NVIDIA</h4>
+        <div class="tag">RTX 5060 — 5090</div>
         <ul>
           <li>vLLM + CUDA 12.x</li>
-          <li>AWQ quantized (group-size 128)</li>
+          <li>AWQ quantization</li>
           <li>6 GB+ VRAM required</li>
           <li>NVIDIA open kernel modules</li>
-        </ul>
-      </div>
-      <div class="variant-card reveal">
-        <h4>NVIDIA Pro</h4>
-        <div class="tag">RTX 5080 — 5090</div>
-        <ul>
-          <li>vLLM + CUDA 12.x</li>
-          <li>AWQ quantized (group-size 64)</li>
-          <li>16 GB+ VRAM recommended</li>
-          <li>NVIDIA proprietary drivers</li>
         </ul>
       </div>
       <div class="variant-card reveal">
@@ -506,7 +498,7 @@ nav {
         <div class="tag">RX 9060 XT — 9070 XT</div>
         <ul>
           <li>ROCm backend</li>
-          <li>AWQ quantized (group-size 128)</li>
+          <li>AWQ quantization</li>
           <li>8 GB+ VRAM required</li>
           <li>amdgpu open-source drivers</li>
         </ul>
@@ -519,28 +511,18 @@ nav {
     <div class="reveal">
       <div class="section-label">Downloads</div>
       <h2>Download an ISO</h2>
-      <p class="sub">Each variant is a bootable ISO (~2 GB). Flash to USB with <code style="color:var(--gray-400)">dd</code> and boot.</p>
+      <p class="sub">Each variant is a bootable ISO. Flash to USB with <code style="color:var(--gray-400)">dd</code> and boot.</p>
     </div>
     <div class="variants-grid" style="margin-top:24px">
       <div class="variant-card reveal">
-        <h4>NVIDIA Standard</h4>
-        <div class="tag">holmium-os-nvidia-std.iso</div>
+        <h4>NVIDIA</h4>
+        <div class="tag">holmium-os-nvidia.iso</div>
         <ul>
-          <li>RTX 5060 — 5070</li>
+          <li>RTX 5060 — 5090</li>
           <li>CUDA 12.x / AWQ</li>
           <li>6 GB+ VRAM</li>
         </ul>
-        <a href="https://github.com/nOS-Coding/Holmium/releases/download/v1.0.0-beta/holmium-os-nvidia-std.iso" class="btn btn-primary" style="margin-top:16px;width:100%;justify-content:center">Download</a>
-      </div>
-      <div class="variant-card reveal">
-        <h4>NVIDIA Pro</h4>
-        <div class="tag">holmium-os-nvidia-pro.iso</div>
-        <ul>
-          <li>RTX 5080 — 5090</li>
-          <li>CUDA 12.x / AWQ</li>
-          <li>16 GB+ VRAM</li>
-        </ul>
-        <a href="https://github.com/nOS-Coding/Holmium/releases/download/v1.0.0-beta/holmium-os-nvidia-pro.iso" class="btn btn-primary" style="margin-top:16px;width:100%;justify-content:center">Download</a>
+        <a href="https://github.com/nOS-Coding/Holmium/releases/download/v1.0.0-beta/holmium-os-nvidia.iso" class="btn btn-primary" style="margin-top:16px;width:100%;justify-content:center">Download</a>
       </div>
       <div class="variant-card reveal">
         <h4>AMD</h4>

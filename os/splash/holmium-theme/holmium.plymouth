@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Holmium OS
+Description=Holmium OS boot splash with ASCII logo
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/holmium-theme
+ScriptFile=/usr/share/plymouth/themes/holmium-theme/holmium.script

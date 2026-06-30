@@ -1,0 +1,198 @@
+<Window x:Class="Holmium.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Holmium.ViewModels"
+        xmlns:conv="clr-namespace:Holmium.Converters"
+        Title="Holmium"
+        Width="900" Height="650"
+        MinWidth="700" MinHeight="500"
+        WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <conv:BoolToColorConverter x:Key="BoolToColor" />
+        <conv:RoleToAlignmentConverter x:Key="RoleToAlign" />
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="1" Margin="8">
+            <TabItem Header="Chat">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Connection status bar -->
+                    <Border Grid.Row="0" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,0,8">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="10" Height="10" Fill="{Binding StatusColor}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding StatusText}" Foreground="{StaticResource TextBrush}" FontSize="13" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Message list -->
+                    <ListView Grid.Row="1" ItemsSource="{Binding Messages}" Background="Transparent" BorderThickness="0"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border MaxWidth="600" Margin="4,4" Padding="10" CornerRadius="8"
+                                        Background="{Binding IsUser, Converter={StaticResource BoolToColor}}"
+                                        BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
+                                        HorizontalAlignment="{Binding IsUser, Converter={StaticResource RoleToAlign}}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Role}" FontSize="11" FontWeight="Bold"
+                                                   Foreground="{StaticResource CyanBrush}" />
+                                        <TextBlock Text="{Binding Content}" TextWrapping="Wrap"
+                                                   Foreground="{StaticResource TextBrush}" FontSize="13" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <!-- Input area -->
+                    <Border Grid.Row="2" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,8,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
+                                     FontSize="13" Height="32" Margin="0,0,8,0" />
+                            <Button Grid.Column="1" Content="Send" Command="{Binding SendCommand}"
+                                    Width="70" Height="32" Foreground="{StaticResource CyanBrush}" />
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Dashboard">
+                <ScrollViewer>
+                    <StackPanel Margin="8">
+                        <!-- System status cards -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="4">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding GpuPercent}" FontSize="32" FontWeight="Bold" Foreground="{StaticResource CyanBrush}" HorizontalAlignment="Center" />
+                                    <TextBlock Text="GPU" FontSize="12" Foreground="{StaticResource DimBrush}" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="4">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding RamPercent}" FontSize="32" FontWeight="Bold" Foreground="{StaticResource CyanBrush}" HorizontalAlignment="Center" />
+                                    <TextBlock Text="RAM" FontSize="12" Foreground="{StaticResource DimBrush}" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="4">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding DiskPercent}" FontSize="32" FontWeight="Bold" Foreground="{StaticResource CyanBrush}" HorizontalAlignment="Center" />
+                                    <TextBlock Text="Disk" FontSize="12" Foreground="{StaticResource DimBrush}" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="3" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="4">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding Uptime}" FontSize="18" FontWeight="Bold" Foreground="{StaticResource CyanBrush}" HorizontalAlignment="Center" TextWrapping="Wrap" />
+                                    <TextBlock Text="Uptime" FontSize="12" Foreground="{StaticResource DimBrush}" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <!-- Quick action buttons -->
+                        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="Quick Actions" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,12" />
+                                <WrapPanel>
+                                    <Button Content="Take Screenshot" Command="{Binding ScreenshotCommand}" Width="160" Height="36" Margin="0,0,8,8" />
+                                    <Button Content="Send Clipboard" Command="{Binding ClipboardSyncCommand}" Width="160" Height="36" Margin="0,0,8,8" />
+                                    <Button Content="Open in Browser" Command="{Binding OpenBrowserCommand}" Width="160" Height="36" Margin="0,0,8,8" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Connection info -->
+                        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16">
+                            <StackPanel>
+                                <TextBlock Text="Connection" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,12" />
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <Ellipse Width="10" Height="10" Fill="{Binding StatusColor}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding StatusText}" Foreground="{StaticResource TextBrush}" FontSize="13" />
+                                </StackPanel>
+                                <Button Content="Toggle Connection" Command="{Binding ToggleConnectionCommand}" Width="160" Height="32" Margin="0,8,0,0" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Settings">
+                <ScrollViewer>
+                    <StackPanel Margin="8">
+                        <!-- Server settings -->
+                        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                            <StackPanel>
+                                <TextBlock Text="Server Configuration" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,12" />
+
+                                <Label Content="Server Address:" Foreground="{StaticResource DimBrush}" />
+                                <TextBox Text="{Binding ServerUrl, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8" />
+
+                                <Label Content="Port:" Foreground="{StaticResource DimBrush}" />
+                                <TextBox Text="{Binding ServerPort, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8" />
+
+                                <Label Content="Auth Token:" Foreground="{StaticResource DimBrush}" />
+                                <PasswordBox x:Name="AuthTokenBox" Margin="0,0,0,8" />
+
+                                <WrapPanel Margin="0,8,0,0">
+                                    <Button Content="Test Connection" x:Name="TestConnectionButton" Width="140" Height="32" Click="OnTestConnection" Margin="0,0,8,0" />
+                                    <TextBlock Text="{Binding TestResult}" Foreground="{StaticResource CyanBrush}" FontSize="13" VerticalAlignment="Center" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- General settings -->
+                        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                            <StackPanel>
+                                <TextBlock Text="General" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,12" />
+
+                                <CheckBox IsChecked="{Binding AutoConnect}" Content="Auto-connect" Margin="0,0,0,8" Foreground="{StaticResource TextBrush}" />
+                                <CheckBox IsChecked="{Binding ClipboardSync}" Content="Clipboard Sync" Margin="0,0,0,8" Foreground="{StaticResource TextBrush}" />
+                                <CheckBox IsChecked="{Binding Notifications}" Content="Notifications" Margin="0,0,0,8" Foreground="{StaticResource TextBrush}" />
+                                <CheckBox IsChecked="{Binding StartOnBoot}" Content="Start on boot" Margin="0,0,0,8" Foreground="{StaticResource TextBrush}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Save -->
+                        <Button Content="Save Settings" Command="{Binding SaveSettingsCommand}" Width="140" Height="36" Margin="0,0,0,16" Foreground="{StaticResource CyanBrush}" />
+
+                        <!-- About -->
+                        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16">
+                            <StackPanel>
+                                <TextBlock Text="About" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,8" />
+                                <TextBlock Text="Holmium v1.0.0" Foreground="{StaticResource DimBrush}" FontSize="13" />
+                                <TextBlock Text="Personal AI OS Client for Windows" Foreground="{StaticResource DimBrush}" FontSize="11" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

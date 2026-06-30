@@ -1,0 +1,68 @@
+#!/sbin/openrc-run
+# holmium-backend — FastAPI backend service
+# Listens on Unix socket /run/holmium/backend.sock and HTTPS on 8765
+# Depends on network, waits for holmium-vllm to be healthy
+
+description="Holmium OS — FastAPI Backend"
+pidfile="/run/holmium/backend.pid"
+command="/usr/bin/python"
+command_args="-m uvicorn backend.main:app --uds /run/holmium/backend.sock --host 0.0.0.0 --port 8765 --ssl-keyfile /etc/holmium/tls/holmium.key --ssl-certfile /etc/holmium/tls/holmium.crt --log-level info"
+command_user="holmium:holmium"
+command_background=true
+
+depend() {
+    need net
+    after holmium-vllm
+    use logger
+}
+
+start_pre() {
+    checkpath -d -m 0755 -o holmium:holmium /run/holmium
+    checkpath -f -m 0644 -o holmium:holmium /var/log/holmium/holmium.log
+
+    # Wait for holmium-vllm to be healthy (max 300s)
+    local max_wait=300
+    local waited=0
+    while [ $waited -lt $max_wait ]; do
+        if [ -S /run/holmium/vllm.sock ] 2>/dev/null; then
+            # Try pinging vLLM via the Unix socket
+            if python -c "
+import json, socket, sys
+try:
+    s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    s.connect('/run/holmium/vllm.sock')
+    s.send(b'GET /health HTTP/1.0\r\nHost: localhost\r\n\r\n')
+    resp = s.recv(1024)
+    s.close()
+    sys.exit(0 if b'200' in resp else 1)
+except:
+    sys.exit(1)
+" 2>/dev/null; then
+                eend 0 "vLLM is healthy (${waited}s)"
+                return 0
+            fi
+        fi
+        sleep 2
+        waited=$((waited + 2))
+    done
+    eend 1 "vLLM health check timed out after ${max_wait}s"
+    return 1
+}
+
+start() {
+    ebegin "Starting holmium-backend"
+    start-stop-daemon --start \
+        --pidfile "$pidfile" \
+        --user "$command_user" \
+        --make-pidfile \
+        --background \
+        --exec "$command" -- $command_args
+    eend $?
+}
+
+stop() {
+    ebegin "Stopping holmium-backend"
+    start-stop-daemon --stop --pidfile "$pidfile" --retry 15
+    rm -f "$pidfile"
+    eend $?
+}

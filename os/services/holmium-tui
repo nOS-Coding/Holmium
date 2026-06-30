@@ -1,0 +1,59 @@
+#!/sbin/openrc-run
+# holmium-tui — Holmium OS TUI on tty1
+# This is the PRIMARY system interface. Runs as root, replaces getty entirely.
+# IMMORTAL: respawn max 0 means it always restarts immediately on crash.
+# KillMode: none — SIGKILL and SIGTERM are ignored for this process.
+
+description="Holmium OS — Textual TUI (System Console)"
+pidfile="/run/holmium/tui.pid"
+command="/usr/bin/python"
+command_args="-m tui.main"
+command_user="root"
+command_background=true
+respawn_max=0
+respawn_period=1
+
+TUI_DIR="/opt/holmium/tui"
+
+depend() {
+    need net
+    after holmium-backend
+    use logger
+}
+
+start_pre() {
+    if [ ! -d "$TUI_DIR" ]; then
+        eend 1 "TUI directory not found: ${TUI_DIR}"
+        return 1
+    fi
+}
+
+start() {
+    ebegin "Starting holmium-tui on tty1"
+
+    checkpath -d -m 0755 -o root:root /run/holmium
+
+    export TEXTUAL_DRIVER=linux
+    export TERM=linux
+
+    start-stop-daemon --start \
+        --pidfile "$pidfile" \
+        --user root \
+        --make-pidfile \
+        --background \
+        --exec "$command" -- $command_args
+
+    local ret=$?
+    if [ $ret -eq 0 ]; then
+        sleep 2
+        if command -v plymouth &>/dev/null; then
+            plymouth quit --retain-splash 2>/dev/null || true
+        fi
+    fi
+    eend $ret
+}
+
+stop() {
+    ebegin "Cannot stop holmium-tui — system interface"
+    eend 0
+}

@@ -1,0 +1,22 @@
+#!/bin/bash
+# Holmium OS Install Manager — TUI entry point
+# Runs from the live USB environment
+
+set -e
+
+echo "============================================"
+echo "  Holmium OS Install Manager"
+echo "============================================"
+echo ""
+
+# Check Python and Textual are available
+if ! python3 -c "import textual" 2>/dev/null; then
+    echo "Installing required Python packages..."
+    pip3 install textual rich 2>/dev/null || {
+        echo "Error: Could not install Textual. Trying system packages..."
+        pacman --noconfirm -S python-textual python-rich 2>/dev/null || true
+    }
+fi
+
+# Launch the TUI install manager
+exec python3 /usr/lib/holmium/installer/install_manager.py

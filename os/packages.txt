@@ -1,0 +1,36 @@
+# Holmium OS — Minimal Arch Linux package list
+# Single-purpose appliance. No DE, no display server, no systemd.
+# Only what's needed to run Holmium.
+
+# Base system
+base
+linux
+linux-firmware
+grub
+efibootmgr
+
+# Init system (OpenRC + eudev instead of systemd)
+openrc
+eudev
+
+# Networking
+networkmanager
+wireguard-tools
+
+# Python runtime
+python
+python-pip
+
+# Core tools
+git
+vim
+htop
+
+# NTP
+chrony
+
+# Boot splash
+plymouth
+
+# Timezone data
+tzdata

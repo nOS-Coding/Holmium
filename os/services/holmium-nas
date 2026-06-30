@@ -1,0 +1,21 @@
+#!/sbin/openrc-run
+# holmium-nas — WebDAV NAS server
+# Serves the entire root filesystem as a WebDAV share on port 8766
+# Used by macOS Finder, Android file managers, and any WebDAV client
+# Runs as root so all files are accessible
+
+description="Holmium OS — WebDAV NAS Server (rootfs)"
+pidfile="/run/holmium/nas.pid"
+command="/usr/bin/python3"
+command_args="-m wsgidav --host 0.0.0.0 --port 8766 --root / --auth simple --user holmium:holmium --no-ssl"
+command_user="root"
+command_background=true
+
+depend() {
+    need net
+    use logger
+}
+
+start_pre() {
+    checkpath -d -m 0755 -o holmium:holmium /run/holmium
+}

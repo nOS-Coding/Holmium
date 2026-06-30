@@ -1,0 +1,60 @@
+#!/sbin/openrc-run
+# holmium-wireguard — WireGuard VPN service
+# Calls wg-quick up/down for wg0 interface
+
+description="Holmium OS — WireGuard VPN"
+pidfile="/run/holmium/wireguard.pid"
+
+WG_INTERFACE="wg0"
+
+depend() {
+    need net
+    use logger
+}
+
+start() {
+    ebegin "Starting WireGuard (${WG_INTERFACE})"
+    if command -v wg-quick &>/dev/null; then
+        wg-quick up "$WG_INTERFACE"
+        local ret=$?
+        if [ $ret -eq 0 ]; then
+            echo "$!" > "$pidfile" 2>/dev/null || true
+        fi
+        eend $ret
+    else
+        eend 1 "wg-quick not found — install wireguard-tools"
+        return 1
+    fi
+}
+
+stop() {
+    ebegin "Stopping WireGuard (${WG_INTERFACE})"
+    if command -v wg-quick &>/dev/null; then
+        wg-quick down "$WG_INTERFACE"
+        local ret=$?
+        rm -f "$pidfile" 2>/dev/null || true
+        eend $ret
+    else
+        eend 1 "wg-quick not found"
+        return 1
+    fi
+}
+
+status() {
+    if command -v wg &>/dev/null && wg show "$WG_INTERFACE" &>/dev/null; then
+        echo "WireGuard ${WG_INTERFACE} is up"
+        wg show "$WG_INTERFACE"
+        return 0
+    else
+        echo "WireGuard ${WG_INTERFACE} is down"
+        return 1
+    fi
+}
+
+reload() {
+    ebegin "Reloading WireGuard configuration"
+    stop
+    sleep 1
+    start
+    eend $?
+}

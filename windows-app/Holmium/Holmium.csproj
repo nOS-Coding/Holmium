@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Holmium</AssemblyName>
+    <RootNamespace>Holmium</RootNamespace>
+    <Version>1.0.0</Version>
+    <Description>Holmium AI — Personal AI OS Client for Windows</Description>
+    <PackageProjectUrl>https://holmium.ai</PackageProjectUrl>
+  </PropertyGroup>
+
+</Project>

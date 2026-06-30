@@ -1,0 +1,7 @@
+torch>=2.4.0
+transformers>=4.44.0
+accelerate>=0.33.0
+bitsandbytes>=0.44.0
+einops>=0.8.0
+jaxtyping>=0.2.0
+tqdm>=4.66.0

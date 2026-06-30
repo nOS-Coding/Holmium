@@ -1,0 +1,90 @@
+#!/sbin/openrc-run
+# holmium-vllm — vLLM Model Server
+# Launches model/start_vllm.sh, listens on Unix socket /run/holmium/vllm.sock
+# Runs health check loop after startup
+
+description="Holmium OS — vLLM Model Server"
+pidfile="/run/holmium/vllm.pid"
+command="/usr/bin/bash"
+command_args="/opt/holmium/model/start_vllm.sh"
+command_user="holmium:holmium"
+command_background=true
+
+START_VLLM_SCRIPT="/opt/holmium/model/start_vllm.sh"
+
+depend() {
+    need net
+    use logger
+}
+
+start_pre() {
+    checkpath -d -m 0755 -o holmium:holmium /run/holmium
+
+    # Verify start script exists
+    if [ ! -f "$START_VLLM_SCRIPT" ]; then
+        eend 1 "vLLM start script not found: ${START_VLLM_SCRIPT}"
+        return 1
+    fi
+
+    # Ensure executable
+    if [ ! -x "$START_VLLM_SCRIPT" ]; then
+        chmod +x "$START_VLLM_SCRIPT"
+    fi
+}
+
+start() {
+    ebegin "Starting holmium-vllm (this may take 30-60s for model load)"
+
+    # Launch vLLM in background
+    start-stop-daemon --start \
+        --pidfile "$pidfile" \
+        --user "$command_user" \
+        --make-pidfile \
+        --background \
+        --exec "$command" -- $command_args
+
+    local ret=$?
+    if [ $ret -ne 0 ]; then
+        eend 1 "Failed to start vLLM process"
+        return 1
+    fi
+
+    # Health check loop — wait for Unix socket
+    local max_wait=120
+    local waited=0
+    ebegin "  Waiting for vLLM to be healthy"
+    while [ $waited -lt $max_wait ]; do
+        if [ -S /run/holmium/vllm.sock ] 2>/dev/null; then
+            # Try health check via socket
+            if python -c "
+import socket, sys
+try:
+    s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    s.settimeout(5)
+    s.connect('/run/holmium/vllm.sock')
+    s.send(b'GET /health HTTP/1.0\r\nHost: localhost\r\n\r\n')
+    resp = s.recv(1024)
+    s.close()
+    sys.exit(0 if b'200' in resp else 1)
+except:
+    sys.exit(1)
+" 2>/dev/null; then
+                eend 0 "vLLM healthy (${waited}s)"
+                return 0
+            fi
+        fi
+        sleep 5
+        waited=$((waited + 5))
+    done
+
+    eend 1 "vLLM health check timed out after ${max_wait}s"
+    return 1
+}
+
+stop() {
+    ebegin "Stopping holmium-vllm"
+    start-stop-daemon --stop --pidfile "$pidfile" --retry 30
+    rm -f /run/holmium/vllm.sock
+    rm -f "$pidfile"
+    eend $?
+}

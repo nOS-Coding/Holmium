@@ -6,7 +6,7 @@ set -euo pipefail
 
 DATE=$(date +%Y%m%d)
 PROFILE_DIR="$(cd "$(dirname "$0")/archiso" && pwd)"
-VARIANT="nvidia-std"
+VARIANT="nvidia"
 DEBIAN_ISO=""
 
 # Parse arguments
@@ -21,12 +21,11 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         --help|-h)
-            echo "Usage: $0 [--variant nvidia-std|nvidia-pro|amd] [--debian-iso path]"
+            echo "Usage: $0 [--variant nvidia|amd] [--debian-iso path]"
             echo ""
             echo "Variants:"
-            echo "  nvidia-std  - NVIDIA RTX 5060-5070, balanced config, AWQ"
-            echo "  nvidia-pro  - NVIDIA RTX 5080-5090, max performance, AWQ"
-            echo "  amd         - AMD RX 9060-9070 XT, ROCm backend"
+            echo "  nvidia  - NVIDIA RTX 5060-5090, CUDA, AWQ"
+            echo "  amd     - AMD RX 9060-9070 XT, ROCm backend"
             exit 0
             ;;
         *)
@@ -39,7 +38,7 @@ done
 
 # Validate variant
 case "$VARIANT" in
-    nvidia-std|nvidia-pro|amd) ;;
+    nvidia|amd) ;;
     *) echo "Invalid variant: $VARIANT. Use: nvidia-std, nvidia-pro, amd"; exit 1 ;;
 esac
 
