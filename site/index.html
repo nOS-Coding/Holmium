@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en" data-page="holmium">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Holmium — Run your AI on your PC</title>
+<meta name="description" content="Holmium is a local-first AI operating system for your own hardware. Chat with LLMs privately on your PC with GPU acceleration, no cloud required.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
+<style>
+[data-page="holmium"] {
+  --color-background: hsl(0, 20%, 99%);
+  --color-background-weak: hsl(0, 8%, 97%);
+  --color-background-weak-hover: hsl(0, 8%, 94%);
+  --color-background-strong: hsl(0, 5%, 12%);
+  --color-background-strong-hover: hsl(0, 5%, 18%);
+  --color-background-interactive: hsl(62, 84%, 88%);
+  --color-background-interactive-weaker: hsl(64, 74%, 95%);
+  --color-text: hsl(0, 1%, 39%);
+  --color-text-weak: hsl(0, 1%, 60%);
+  --color-text-weaker: hsl(30, 2%, 81%);
+  --color-text-strong: hsl(0, 5%, 12%);
+  --color-text-inverted: hsl(0, 20%, 99%);
+  --color-border: hsl(30, 2%, 81%);
+  --color-border-weak: hsla(0, 100%, 3%, 0.12);
+  --color-icon: hsl(0, 1%, 55%);
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --padding: 5rem;
+  --vertical-padding: 4rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-page="holmium"] {
+    --color-background: hsl(0, 9%, 7%);
+    --color-background-weak: hsl(0, 6%, 10%);
+    --color-background-weak-hover: hsl(0, 6%, 15%);
+    --color-background-strong: hsl(0, 15%, 94%);
+    --color-background-strong-hover: hsl(0, 15%, 97%);
+    --color-background-interactive: hsl(62, 100%, 90%);
+    --color-background-interactive-weaker: hsl(60, 20%, 8%);
+    --color-text: hsl(0, 4%, 71%);
+    --color-text-weak: hsl(0, 2%, 49%);
+    --color-text-weaker: hsl(0, 3%, 28%);
+    --color-text-strong: hsl(0, 15%, 94%);
+    --color-text-inverted: hsl(0, 9%, 7%);
+    --color-border: hsl(0, 3%, 28%);
+    --color-border-weak: hsl(0, 4%, 23%);
+    --color-icon: hsl(10, 3%, 43%);
+  }
+}
+
+@media (max-width: 60rem) {
+  [data-page="holmium"] {
+    --padding: 1.5rem;
+    --vertical-padding: 3rem;
+  }
+}
+
+::selection {
+  background: var(--color-background-interactive);
+  color: var(--color-text-strong);
+}
+
+@media (prefers-color-scheme: dark) {
+  ::selection {
+    background: var(--color-background-interactive);
+    color: var(--color-text-inverted);
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--color-background);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[data-page="holmium"] {
+  background: var(--color-background);
+  display: flex;
+  gap: var(--vertical-padding);
+  flex-direction: column;
+  font-family: var(--font-mono);
+  color: var(--color-text);
+  padding-bottom: 5rem;
+}
+
+[data-page="holmium"] a {
+  color: var(--color-text-strong);
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+  text-decoration-thickness: 1px;
+}
+
+[data-page="holmium"] p {
+  line-height: 200%;
+}
+
+@media (max-width: 60rem) {
+  [data-page="holmium"] p {
+    line-height: 180%;
+  }
+}
+
+@media (max-width: 60rem) {
+  [data-page="holmium"] {
+    font-size: 15px;
+  }
+}
+
+/* Container */
+[data-component="container"] {
+  max-width: 67.5rem;
+  margin: 0 auto;
+  border: 1px solid var(--color-border-weak);
+  border-top: none;
+}
+
+@media (max-width: 65rem) {
+  [data-component="container"] {
+    border: none;
+  }
+}
+
+/* Top / Nav */
+[data-component="top"] {
+  padding: 24px var(--padding);
+  height: 80px;
+  min-height: 80px;
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--color-background);
+  border-bottom: 1px solid var(--color-border-weak);
+  z-index: 10;
+}
+
+[data-component="logo"] {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+[data-component="logo"] svg {
+  height: 28px;
+  width: auto;
+  color: var(--color-text-strong);
+}
+
+[data-component="logo"] span {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-strong);
+  letter-spacing: -0.02em;
+}
+
+/* Desktop Nav */
+[data-component="nav-desktop"] ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+
+@media (max-width: 55rem) {
+  [data-component="nav-desktop"] ul { gap: 24px; }
+}
+
+@media (max-width: 48rem) {
+  [data-component="nav-desktop"] ul { gap: 20px; }
+}
+
+[data-component="nav-desktop"] li a {
+  text-decoration: none;
+  color: var(--color-text-weak);
+  font-size: 0.9375rem;
+}
+
+[data-component="nav-desktop"] li a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+  text-decoration-thickness: 1px;
+  color: var(--color-text-strong);
+}
+
+[data-slot="cta-button"] {
+  background: var(--color-background-strong);
+  color: var(--color-text-inverted);
+  padding: 8px 16px 8px 10px;
+  border-radius: 4px;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+}
+
+[data-slot="cta-button"]:hover {
+  background: var(--color-background-strong-hover);
+  text-decoration: none;
+  color: var(--color-text-inverted);
+}
+
+@media (max-width: 40rem) {
+  [data-component="nav-desktop"] { display: none; }
+}
+
+/* Mobile Nav */
+[data-component="nav-mobile"] {
+  display: none;
+}
+
+@media (max-width: 40rem) {
+  [data-component="nav-mobile"] { display: block; }
+}
+
+[data-component="nav-mobile-toggle"] {
+  border: none;
+  background: none;
+  outline: none;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  margin-right: -8px;
+  color: var(--color-icon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-component="nav-mobile-toggle"]:hover {
+  background: var(--color-background-weak);
+  border-radius: 4px;
+}
+
+[data-component="nav-mobile-menu"] {
+  display: none;
+  position: fixed;
+  background: var(--color-background);
+  top: 80px;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  z-index: 20;
+}
+
+[data-component="nav-mobile-menu"].open {
+  display: block;
+}
+
+[data-component="nav-mobile-menu"] ul {
+  list-style: none;
+  padding: 20px 0;
+}
+
+[data-component="nav-mobile-menu"] li a {
+  text-decoration: none;
+  padding: 20px;
+  display: block;
+  color: var(--color-text-weak);
+  font-size: 1rem;
+}
+
+[data-component="nav-mobile-menu"] li a:hover {
+  background: var(--color-background-weak);
+  color: var(--color-text-strong);
+}
+
+/* Hero */
+[data-component="hero"] {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  padding: calc(var(--vertical-padding) * 1.5) var(--padding);
+}
+
+@media (max-width: 30rem) {
+  [data-component="hero"] {
+    padding: var(--vertical-padding) var(--padding);
+  }
+}
+
+[data-slot="hero-copy"] h1 {
+  font-size: 38px;
+  color: var(--color-text-strong);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 60rem) {
+  [data-slot="hero-copy"] h1 { font-size: 22px; }
+}
+
+[data-slot="hero-copy"] p {
+  color: var(--color-text);
+  margin-bottom: 32px;
+  max-width: 82%;
+}
+
+@media (max-width: 50rem) {
+  [data-slot="hero-copy"] p { max-width: 100%; }
+}
+
+[data-slot="hero-copy"] .hero-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+[data-slot="hero-copy"] .hero-buttons a,
+[data-slot="hero-copy"] .hero-buttons button {
+  background: var(--color-background-strong);
+  padding: 8px 12px 8px 20px;
+  color: var(--color-text-inverted);
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+}
+
+[data-slot="hero-copy"] .hero-buttons a:hover,
+[data-slot="hero-copy"] .hero-buttons button:hover {
+  background: var(--color-background-strong-hover);
+}
+
+[data-slot="hero-copy"] .hero-buttons .button-outline {
+  background: transparent;
+  color: var(--color-text-strong);
+  border: 1px solid var(--color-border-weak);
+}
+
+[data-slot="hero-copy"] .hero-buttons .button-outline:hover {
+  background: var(--color-background-weak);
+}
+
+/* Section common */
+[data-component="section"] {
+  border-top: 1px solid var(--color-border-weak);
+  padding: var(--vertical-padding) var(--padding);
+}
+
+[data-slot="section-title"] {
+  margin-bottom: 24px;
+  max-width: 100%;
+}
+
+[data-slot="section-title"] h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-strong);
+  margin-bottom: 12px;
+}
+
+[data-slot="section-title"] p {
+  margin-bottom: 12px;
+  color: var(--color-text);
+}
+
+/* What / Features */
+[data-component="what"] ul {
+  padding: 0;
+}
+
+[data-component="what"] ul li {
+  list-style: none;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 12px;
+  line-height: 200%;
+}
+
+@media (max-width: 60rem) {
+  [data-component="what"] ul li { line-height: 180%; }
+}
+
+[data-component="what"] ul li .icon {
+  color: var(--color-icon);
+  flex-shrink: 0;
+}
+
+[data-component="what"] ul li strong {
+  font-weight: 500;
+  color: var(--color-text-strong);
+  margin-right: 12px;
+  white-space: nowrap;
+}
+
+/* Variants */
+[data-component="variants"] {
+  border-top: 1px solid var(--color-border-weak);
+  padding: var(--vertical-padding) var(--padding);
+}
+
+[data-component="variant-cards"] {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 55rem) {
+  [data-component="variant-cards"] {
+    grid-template-columns: 1fr;
+  }
+}
+
+[data-slot="variant-card"] {
+  background: var(--color-background-weak);
+  border: 1px solid var(--color-border-weak);
+  border-radius: 6px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+[data-slot="variant-card"] h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-strong);
+}
+
+[data-slot="variant-card"] .tag {
+  display: inline-block;
+  background: var(--color-background-interactive);
+  color: var(--color-text-strong);
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-weight: 500;
+  width: fit-content;
+}
+
+[data-slot="variant-card"] ul {
+  list-style: none;
+  padding: 0;
+}
+
+[data-slot="variant-card"] ul li {
+  line-height: 200%;
+  font-size: 0.875rem;
+  display: flex;
+  gap: 8px;
+}
+
+[data-slot="variant-card"] ul li::before {
+  content: ">";
+  color: var(--color-icon);
+}
+
+/* Pricing */
+[data-component="pricing"] {
+  border-top: 1px solid var(--color-border-weak);
+  padding: var(--vertical-padding) var(--padding);
+}
+
+[data-component="pricing-tiers"] {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 24px;
+}
+
+@media (max-width: 40rem) {
+  [data-component="pricing-tiers"] {
+    grid-template-columns: 1fr;
+  }
+}
+
+[data-slot="pricing-card"] {
+  background: var(--color-background-weak);
+  border: 1px solid var(--color-border-weak);
+  border-radius: 6px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+[data-slot="pricing-card"].featured {
+  border-color: var(--color-background-strong);
+  position: relative;
+}
+
+[data-slot="pricing-card"].featured::before {
+  content: "Best value";
+  position: absolute;
+  top: -12px;
+  right: 24px;
+  background: var(--color-background-strong);
+  color: var(--color-text-inverted);
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+[data-slot="pricing-card"] h4 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text-strong);
+}
+
+[data-slot="pricing-card"] .price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-strong);
+}
+
+[data-slot="pricing-card"] .price span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-text-weak);
+}
+
+[data-slot="pricing-card"] ul {
+  list-style: none;
+  padding: 0;
+}
+
+[data-slot="pricing-card"] ul li {
+  line-height: 200%;
+  font-size: 0.875rem;
+  display: flex;
+  gap: 8px;
+}
+
+[data-slot="pricing-card"] ul li::before {
+  content: "*";
+  color: var(--color-icon);
+}
+
+[data-slot="pricing-card"] .buy-button {
+  background: var(--color-background-strong);
+  color: var(--color-text-inverted);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  width: 100%;
+  text-align: center;
+}
+
+[data-slot="pricing-card"] .buy-button:hover {
+  background: var(--color-background-strong-hover);
+}
+
+.pricing-note {
+  margin-top: 16px;
+  font-size: 0.8125rem;
+  color: var(--color-text-weak);
+  text-align: center;
+}
+
+/* Privacy */
+[data-component="privacy"] {
+  border-top: 1px solid var(--color-border-weak);
+  padding: var(--vertical-padding) var(--padding);
+}
+
+[data-component="privacy"] p {
+  max-width: 80%;
+}
+
+@media (max-width: 50rem) {
+  [data-component="privacy"] p { max-width: 100%; }
+}
+
+/* FAQ */
+[data-component="faq"] {
+  border-top: 1px solid var(--color-border-weak);
+  padding: var(--vertical-padding) var(--padding);
+}
+
+[data-component="faq"] ul {
+  padding: 0;
+}
+
+[data-component="faq"] ul li {
+  list-style: none;
+  margin-bottom: 24px;
+  line-height: 200%;
+}
+
+[data-slot="faq-question"] {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 8px;
+  color: var(--color-text-strong);
+  font-weight: 500;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  align-items: start;
+  min-height: 24px;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+}
+
+[data-slot="faq-indicator"] {
+  color: var(--color-text-weak);
+  flex-shrink: 0;
+  font-weight: 400;
+}
+
+[data-slot="faq-question-text"] {
+  flex-grow: 1;
+}
+
+[data-slot="faq-answer"] {
+  margin-left: 40px;
+  margin-bottom: 32px;
+  line-height: 200%;
+  color: var(--color-text);
+}
+
+[data-slot="faq-answer"][hidden] {
+  display: none;
+}
+
+/* Testimonials */
+[data-component="testimonials"] {
+  border-top: 1px solid var(--color-border-weak);
+  padding: var(--vertical-padding) var(--padding);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+[data-slot="testimonial"] {
+  background: var(--color-background-weak);
+  border-radius: 6px;
+  border: 1px solid var(--color-border-weak);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+[data-slot="testimonial"] [data-slot="name"] {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--color-text-strong);
+  font-weight: 500;
+}
+
+[data-slot="testimonial"] [data-slot="name"] .handle {
+  color: var(--color-text-weak);
+  font-weight: 400;
+}
+
+[data-slot="testimonial"] [data-slot="quote"] {
+  margin-left: 0;
+  color: var(--color-text);
+}
+
+/* Email signup */
+[data-component="email"] {
+  border-top: 1px solid var(--color-border-weak);
+  padding: var(--vertical-padding) var(--padding);
+  color: var(--color-text);
+}
+
+[data-slot="form"] {
+  position: relative;
+  max-width: 32rem;
+}
+
+[data-slot="form"] input {
+  background: var(--color-background-weak);
+  border-radius: 6px;
+  border: 1px solid var(--color-border-weak);
+  padding: 20px;
+  width: 100%;
+  color: var(--color-text-strong);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+}
+
+[data-slot="form"] input:focus {
+  background: var(--color-background-interactive-weaker);
+  outline: none;
+  border: 1px solid var(--color-background-strong);
+  box-shadow: 0 0 0 3px var(--color-background-interactive);
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-slot="form"] input:focus {
+    box-shadow: none;
+    border: 1px solid var(--color-background-interactive);
+  }
+}
+
+[data-slot="form"] input::placeholder {
+  color: var(--color-text-weak);
+  opacity: 1;
+}
+
+[data-slot="form"] button {
+  position: absolute;
+  height: 40px;
+  right: 12px;
+  background: var(--color-background-strong);
+  padding: 4px 20px;
+  color: var(--color-text-inverted);
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  font-weight: 500;
+  cursor: pointer;
+  top: 50%;
+  margin-top: -20px;
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+}
+
+[data-slot="form"] button:hover {
+  background: var(--color-background-strong-hover);
+}
+
+@media (max-width: 30rem) {
+  [data-slot="form"] button {
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    top: auto;
+    margin-top: 0;
+  }
+}
+
+/* Footer */
+[data-component="footer"] {
+  border-top: 1px solid var(--color-border-weak);
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 65rem) {
+  [data-component="footer"] {
+    border-bottom: 1px solid var(--color-border-weak);
+  }
+}
+
+[data-slot="cell"] {
+  flex: 1;
+  text-align: center;
+}
+
+[data-slot="cell"] a {
+  text-decoration: none;
+  padding: 2rem 0;
+  width: 100%;
+  display: block;
+  color: var(--color-text-weak);
+}
+
+[data-slot="cell"] a:hover {
+  background: var(--color-background-weak);
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+  text-decoration-thickness: 1px;
+  color: var(--color-text-strong);
+}
+
+[data-slot="cell"] + [data-slot="cell"] {
+  border-left: 1px solid var(--color-border-weak);
+}
+
+@media (max-width: 25rem) {
+  [data-component="footer"] {
+    flex-wrap: wrap;
+  }
+  [data-slot="cell"] {
+    flex: 1 0 100%;
+    border-left: none;
+    border-top: 1px solid var(--color-border-weak);
+  }
+  [data-slot="cell"]:nth-child(1) { border-top: none; }
+}
+
+/* Legal */
+[data-component="legal"] {
+  color: var(--color-text-weak);
+  text-align: center;
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+  font-size: 0.8125rem;
+  padding: 1rem var(--padding);
+}
+
+[data-component="legal"] a {
+  color: var(--color-text-weak);
+  text-decoration: none;
+}
+
+[data-component="legal"] a:hover {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+/* Utils */
+[data-slot="badge"] {
+  background: var(--color-background-strong);
+  color: var(--color-text-inverted);
+  font-weight: 500;
+  padding: 4px 8px;
+  line-height: 1;
+  flex-shrink: 0;
+  font-size: 0.75rem;
+}
+</style>
+</head>
+<body>
+
+<div data-page="holmium">
+
+  <!-- Container -->
+  <div data-component="container">
+
+    <!-- Top bar -->
+    <div data-component="top">
+      <a href="/" data-component="logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="14" cy="14" r="12"/>
+          <path d="M10 10h8v8h-8z"/>
+          <circle cx="14" cy="14" r="2" fill="currentColor" stroke="none"/>
+          <line x1="14" y1="2" x2="14" y2="6"/>
+          <line x1="14" y1="22" x2="14" y2="26"/>
+          <line x1="2" y1="14" x2="6" y2="14"/>
+          <line x1="22" y1="14" x2="26" y2="14"/>
+        </svg>
+        <span>Holmium</span>
+      </a>
+
+      <nav data-component="nav-desktop">
+        <ul>
+          <li><a href="#what">What</a></li>
+          <li><a href="#variants">Variants</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="https://github.com/nOS-Coding/Holmium" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="#pricing" data-slot="cta-button">
+            <span>Get license</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>
+          </a></li>
+        </ul>
+      </nav>
+
+      <nav data-component="nav-mobile">
+        <button data-component="nav-mobile-toggle" onclick="document.querySelector('[data-component=nav-mobile-menu]').classList.toggle('open')" aria-label="Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Mobile menu -->
+    <div data-component="nav-mobile-menu">
+      <ul>
+        <li><a href="#what" onclick="this.closest('[data-component=nav-mobile-menu]').classList.remove('open')">What</a></li>
+        <li><a href="#variants" onclick="this.closest('[data-component=nav-mobile-menu]').classList.remove('open')">Variants</a></li>
+        <li><a href="#pricing" onclick="this.closest('[data-component=nav-mobile-menu]').classList.remove('open')">Pricing</a></li>
+        <li><a href="#faq" onclick="this.closest('[data-component=nav-mobile-menu]').classList.remove('open')">FAQ</a></li>
+        <li><a href="https://github.com/nOS-Coding/Holmium" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </div>
+
+    <!-- Hero -->
+    <div data-component="hero">
+      <div data-slot="hero-copy">
+        <h1>Run your AI on your PC</h1>
+        <p>Holmium is a local-first AI operating system for your own hardware. Chat with LLMs privately on your PC with GPU acceleration, no cloud required. No data leaves your machine.</p>
+        <div class="hero-buttons">
+          <a href="#pricing">Get a license</a>
+          <a href="#variants" class="button-outline">See variants</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- What / Features -->
+    <div data-component="section" id="what">
+      <div data-slot="section-title">
+        <h3>What is Holmium?</h3>
+        <p>An Arch Linux + OpenRC-based OS that boots directly into a local AI assistant. No browser, no cloud, no telemetry. Your GPU does the work.</p>
+      </div>
+      <div data-component="what">
+        <ul>
+          <li><span class="icon">*</span><strong>Local-first</strong> Everything runs on your machine. No data ever leaves your PC. vLLM + llama.cpp for inference.</li>
+          <li><span class="icon">*</span><strong>GPU-accelerated</strong> Native CUDA (NVIDIA) or ROCm (AMD) support. Quantized models (Q4_K_M or Q8_0) for maximum performance on consumer hardware.</li>
+          <li><span class="icon">*</span><strong>Dual-boot ready</strong> Install alongside Debian, Ubuntu, Fedora, KDE Neon, Nobara, or CachyOS. Auto-detects existing OSes and sets up GRUB chain-loading.</li>
+          <li><span class="icon">*</span><strong>Platform apps</strong> Native macOS (AppKit), Windows (WPF), and Android (Material You) companion apps with Chat, Dashboard, and Settings tabs. Linux uses the TUI on tty1.</li>
+          <li><span class="icon">*</span><strong>Private by design</strong> Zero telemetry, no accounts required to use the OS. License key is machine-bound (Ed25519-signed) — only used for subscription verification.</li>
+          <li><span class="icon">*</span><strong>Free updates</strong> All updates are free while your subscription is active. Rebuild your ISO any time.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Variants -->
+    <div data-component="variants" id="variants">
+      <div data-slot="section-title">
+        <h3>ISO variants</h3>
+        <p>Three pre-built variants optimized for different hardware. Download the ISO, flash to USB, and boot.</p>
+      </div>
+      <div data-component="variant-cards">
+        <div data-slot="variant-card">
+          <h4>NVIDIA Standard</h4>
+          <span class="tag">RTX 5060 — 5070</span>
+          <ul>
+            <li>vLLM + CUDA 12.x</li>
+            <li>Q4_K_M quantized models</li>
+            <li>6GB+ VRAM required</li>
+            <li>NVIDIA open kernel modules</li>
+          </ul>
+        </div>
+        <div data-slot="variant-card">
+          <h4>NVIDIA Pro</h4>
+          <span class="tag">RTX 5080 — 5090</span>
+          <ul>
+            <li>vLLM + CUDA 12.x</li>
+            <li>Q8_0 quantized models</li>
+            <li>16GB+ VRAM recommended</li>
+            <li>NVIDIA proprietary drivers</li>
+          </ul>
+        </div>
+        <div data-slot="variant-card">
+          <h4>AMD</h4>
+          <span class="tag">RX 9060 XT — 9070 XT</span>
+          <ul>
+            <li>ROCm backend</li>
+            <li>Q4_K_M quantized models</li>
+            <li>8GB+ VRAM required</li>
+            <li>amdgpu open-source drivers</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div data-component="pricing" id="pricing">
+      <div data-slot="section-title">
+        <h3>Pricing</h3>
+        <p>The ISO is free to download and try. The Holmium backend requires an active subscription for inference, file operations, and assistant features.</p>
+      </div>
+      <div data-component="pricing-tiers">
+        <div data-slot="pricing-card">
+          <h4>Monthly</h4>
+          <div class="price">$8<span>/mo</span></div>
+          <ul>
+            <li>Full backend access</li>
+            <li>All model quantizations</li>
+            <li>Platform companion apps</li>
+            <li>Free updates while active</li>
+            <li>Cancel anytime</li>
+          </ul>
+          <button class="buy-button" onclick="window.LemonSqueezy?.Url?.Open?.({url: 'https://holmium.lemonsqueezy.com/checkout/buy/monthly'});">
+            Subscribe monthly
+          </button>
+        </div>
+        <div data-slot="pricing-card" class="featured">
+          <h4>Yearly</h4>
+          <div class="price">$85<span>/yr</span></div>
+          <ul>
+            <li>Full backend access</li>
+            <li>All model quantizations</li>
+            <li>Platform companion apps</li>
+            <li>Free updates while active</li>
+            <li>Cancel anytime</li>
+            <li><strong>Save ~$11/year</strong></li>
+          </ul>
+          <button class="buy-button" onclick="window.LemonSqueezy?.Url?.Open?.({url: 'https://holmium.lemonsqueezy.com/checkout/buy/yearly'});">
+            Subscribe yearly
+          </button>
+        </div>
+      </div>
+      <p class="pricing-note">Licenses are machine-bound (tied to /etc/machine-id). One license per machine. Need help? <a href="mailto:support@holmium.ai">support@holmium.ai</a></p>
+    </div>
+
+    <!-- Privacy -->
+    <div data-component="privacy" id="privacy">
+      <div data-slot="section-title">
+        <h3>Privacy</h3>
+        <p>Holmium collects nothing. The OS has no telemetry, no analytics, no remote logging. The only network call your machine makes is to validate your Ed25519-signed license key on boot (if you have a subscription). License validation contacts our server once per day and transmits only your machine ID — no personal data, no usage statistics, no model prompts. The WireGuard subnet (10.0.0.0/24) is for local device access only; no traffic is routed externally.</p>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div data-component="faq" id="faq">
+      <div data-slot="section-title">
+        <h3>FAQ</h3>
+      </div>
+      <ul>
+        <li>
+          <button data-slot="faq-question" onclick="toggleFaq(this)">
+            <span data-slot="faq-indicator">+</span>
+            <span data-slot="faq-question-text">What hardware do I need?</span>
+          </button>
+          <div data-slot="faq-answer" hidden>
+            Minimum: NVIDIA RTX 5060 (6GB VRAM) or AMD RX 9060 XT (8GB VRAM), 16GB system RAM, 512GB storage. Recommended: RTX 5070+ or RX 9070 XT, 32GB RAM, 1TB NVMe. All variants require a dedicated GPU — integrated graphics will not work.
+          </div>
+        </li>
+        <li>
+          <button data-slot="faq-question" onclick="toggleFaq(this)">
+            <span data-slot="faq-indicator">+</span>
+            <span data-slot="faq-question-text">Can I dual-boot with my existing OS?</span>
+          </button>
+          <div data-slot="faq-answer" hidden>
+            Yes. Holmium currently supports dual-boot alongside Debian, KDE Neon, Ubuntu, Fedora, Nobara, and CachyOS. The installer auto-detects existing OSes and sets up GRUB chain-loading. You pick which OS to keep as default.
+          </div>
+        </li>
+        <li>
+          <button data-slot="faq-question" onclick="toggleFaq(this)">
+            <span data-slot="faq-indicator">+</span>
+            <span data-slot="faq-question-text">Do I need a subscription to use Holmium?</span>
+          </button>
+          <div data-slot="faq-answer" hidden>
+            The ISO boots and you can explore the system without a license. However, the Holmium backend (inference, assistant features, file operations, tool use) requires an active subscription. There is no trial — you need a paid subscription for the OS to be useful beyond browsing the TUI.
+          </div>
+        </li>
+        <li>
+          <button data-slot="faq-question" onclick="toggleFaq(this)">
+            <span data-slot="faq-indicator">+</span>
+            <span data-slot="faq-question-text">How does the license work?</span>
+          </button>
+          <div data-slot="faq-answer" hidden>
+            Your license key is an Ed25519-signed token tied to your machine's /etc/machine-id. When you subscribe via Lemon Squeezy, we generate a key bound to your account. The backend validates it locally (with daily online checks). One license per machine. Cancel anytime — your key remains valid until the end of your billing period.
+          </div>
+        </li>
+        <li>
+          <button data-slot="faq-question" onclick="toggleFaq(this)">
+            <span data-slot="faq-indicator">+</span>
+            <span data-slot="faq-question-text">Can I cancel my subscription?</span>
+          </button>
+          <div data-slot="faq-answer" hidden>
+            Yes, anytime. Your license remains active until the end of the billing period. After that, the backend will refuse inference requests. No cancellation fees, no lock-in. You keep your data and models — only the license validation will reject new requests.
+          </div>
+        </li>
+        <li>
+          <button data-slot="faq-question" onclick="toggleFaq(this)">
+            <span data-slot="faq-indicator">+</span>
+            <span data-slot="faq-question-text">What companion apps are available?</span>
+          </button>
+          <div data-slot="faq-answer" hidden>
+            Native apps for macOS (AppKit), Windows (WPF), and Android (Material You). Each has Chat, Dashboard, and Settings tabs with WebSocket connection to your Holmium machine. Linux uses the built-in TUI on tty1 or the CLI via the `holmium` command.
+          </div>
+        </li>
+        <li>
+          <button data-slot="faq-question" onclick="toggleFaq(this)">
+            <span data-slot="faq-indicator">+</span>
+            <span data-slot="faq-question-text">Is the source code available?</span>
+          </button>
+          <div data-slot="faq-answer" hidden>
+            The companion apps and tooling are open source on <a href="https://github.com/nOS-Coding/Holmium" target="_blank" rel="noopener">GitHub</a>. The ISO build scripts and dual-boot detection are also public. The Holmium backend and model serving stack are proprietary.
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Email signup -->
+    <div data-component="email">
+      <div data-slot="section-title">
+        <h3>Stay updated</h3>
+        <p>Get notified when new ISO builds are released, when new variants drop, and when the public beta opens.</p>
+      </div>
+      <div data-slot="form">
+        <form action="https://holmium.us.lemonsqueezy.com/email-subscribe" method="POST" target="_blank" rel="noopener">
+          <input type="email" name="email" placeholder="your@email.com" required>
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div data-component="footer">
+      <div data-slot="cell">
+        <a href="https://github.com/nOS-Coding/Holmium" target="_blank" rel="noopener"><span>GitHub</span></a>
+      </div>
+      <div data-slot="cell">
+        <a href="#faq"><span>FAQ</span></a>
+      </div>
+      <div data-slot="cell">
+        <a href="mailto:support@holmium.ai"><span>Contact</span></a>
+      </div>
+    </div>
+
+    <!-- Legal -->
+    <div data-component="legal">
+      <span>&copy; 2026 Holmium</span>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleFaq(btn) {
+  var answer = btn.nextElementSibling;
+  var indicator = btn.querySelector('[data-slot="faq-indicator"]');
+  var hidden = answer.hasAttribute('hidden');
+  if (hidden) {
+    answer.removeAttribute('hidden');
+    indicator.textContent = '\u2212';
+  } else {
+    answer.setAttribute('hidden', '');
+    indicator.textContent = '+';
+  }
+}
+</script>
+
+</body>
+</html>
