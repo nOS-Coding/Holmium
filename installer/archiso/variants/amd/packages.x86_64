@@ -24,7 +24,5 @@ rocm-hip-sdk
 rocminfo
 python
 python-pip
-openrc
-elogind
 chrony
 networkmanager

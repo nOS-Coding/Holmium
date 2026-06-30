@@ -22,7 +22,5 @@ xdg-utils
 iptables
 python
 python-pip
-openrc
-elogind
 chrony
 networkmanager

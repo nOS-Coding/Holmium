@@ -25,7 +25,5 @@ nvidia-utils
 cuda
 python
 python-pip
-openrc
-elogind
 chrony
 networkmanager
