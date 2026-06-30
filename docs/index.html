@@ -58,7 +58,7 @@ body {
 /* ─── CONTAINER ─── */
 .page {
   position: relative; z-index: 1;
-  max-width: 67.5rem; margin: 0 auto;
+  max-width: 72rem; margin: 0 auto;
   padding: 0 var(--padding);
 }
 
@@ -190,8 +190,10 @@ nav {
 
 /* ─── SECTION ─── */
 .section {
-  border-top: 1px solid var(--gray-800);
   padding: var(--vp) 0;
+}
+.section + .section {
+  border-top: 1px solid var(--gray-800);
 }
 
 .section-label {
@@ -336,32 +338,20 @@ nav {
 .email-form button:hover { background: #0d9488; }
 
 /* ─── FOOTER ─── */
-.footer-grid {
-  display: flex; border-top: 1px solid var(--gray-800);
+.footer-links {
+  display: flex; gap: 32px; justify-content: center; flex-wrap: wrap;
+  padding: 2rem 0; border-top: 1px solid var(--gray-800);
 }
-.footer-cell {
-  flex: 1; text-align: center;
-  border-left: 1px solid var(--gray-800);
+.footer-links a {
+  color: var(--gray-500); text-decoration: none; font-size: 0.875rem;
 }
-.footer-cell:first-child { border-left: none; }
-.footer-cell a {
-  display: block; padding: 1.5rem 0; color: var(--gray-500);
-  text-decoration: none; font-size: 0.875rem;
-}
-.footer-cell a:hover { color: var(--gray-100); background: var(--black-soft); }
-
+.footer-links a:hover { color: var(--gray-100); }
 .legal {
   display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
-  padding: 1.5rem 0; color: var(--gray-600); font-size: 0.75rem;
+  padding: 1.5rem 0 0; color: var(--gray-600); font-size: 0.75rem;
 }
 .legal a { color: var(--gray-600); text-decoration: none; }
 .legal a:hover { color: var(--gray-400); }
-
-@media (max-width: 25rem) {
-  .footer-grid { flex-direction: column; }
-  .footer-cell { border-left: none; border-top: 1px solid var(--gray-800); }
-  .footer-cell:first-child { border-top: none; }
-}
 
 /* ─── SHIMMER LOADING ─── */
 @keyframes shimmer {
@@ -429,7 +419,7 @@ nav {
         <span class="terminal-title">holmium — tty1</span>
       </div>
       <div class="terminal-body">
-        <div><span class="prompt">user@holmium:~$</span> <span class="cmd" id="typed-line"></span><span class="terminal-cursor" id="cursor"></span></div>
+        <div><span class="prompt">user@holmium:~$</span> <span class="cmd" id="typed-line"></span><span class="terminal-cursor"></span></div>
         <div id="terminal-output" style="margin-top:8px"></div>
       </div>
     </div>
@@ -524,12 +514,54 @@ nav {
     </div>
   </section>
 
+  <!-- DOWNLOADS -->
+  <section class="section" id="downloads">
+    <div class="reveal">
+      <div class="section-label">Downloads</div>
+      <h2>Download an ISO</h2>
+      <p class="sub">Each variant is a bootable ISO (~2 GB). Flash to USB with <code style="color:var(--gray-400)">dd</code> and boot.</p>
+    </div>
+    <div class="variants-grid" style="margin-top:24px">
+      <div class="variant-card reveal">
+        <h4>NVIDIA Standard</h4>
+        <div class="tag">holmium-os-nvidia-std.iso</div>
+        <ul>
+          <li>RTX 5060 — 5070</li>
+          <li>CUDA 12.x / AWQ</li>
+          <li>6 GB+ VRAM</li>
+        </ul>
+        <a href="https://github.com/nOS-Coding/Holmium/releases/download/v1.0.0-beta/holmium-os-nvidia-std.iso" class="btn btn-primary" style="margin-top:16px;width:100%;justify-content:center">Download</a>
+      </div>
+      <div class="variant-card reveal">
+        <h4>NVIDIA Pro</h4>
+        <div class="tag">holmium-os-nvidia-pro.iso</div>
+        <ul>
+          <li>RTX 5080 — 5090</li>
+          <li>CUDA 12.x / AWQ</li>
+          <li>16 GB+ VRAM</li>
+        </ul>
+        <a href="https://github.com/nOS-Coding/Holmium/releases/download/v1.0.0-beta/holmium-os-nvidia-pro.iso" class="btn btn-primary" style="margin-top:16px;width:100%;justify-content:center">Download</a>
+      </div>
+      <div class="variant-card reveal">
+        <h4>AMD</h4>
+        <div class="tag">holmium-os-amd.iso</div>
+        <ul>
+          <li>RX 9060 XT — 9070 XT</li>
+          <li>ROCm / AWQ</li>
+          <li>8 GB+ VRAM</li>
+        </ul>
+        <a href="https://github.com/nOS-Coding/Holmium/releases/download/v1.0.0-beta/holmium-os-amd.iso" class="btn btn-primary" style="margin-top:16px;width:100%;justify-content:center">Download</a>
+      </div>
+    </div>
+    <p style="margin-top:16px;font-size:0.75rem;color:var(--gray-600);text-align:center">ISOs built with <code style="color:var(--gray-500)">installer/build_iso.sh --variant &lt;name&gt;</code></p>
+  </section>
+
   <!-- PRICING -->
   <section class="section" id="pricing">
     <div class="reveal">
       <div class="section-label">Pricing</div>
-      <h2>Pay once, use locally forever</h2>
-      <p class="sub">The ISO is free. The backend needs a subscription. One license per machine, Ed25519-signed, bound to your hardware.</p>
+      <h2>Monthly license, local inference</h2>
+      <p class="sub">The ISO is free to download. The backend needs an active subscription. One license per machine, Ed25519-signed, bound to your hardware.</p>
     </div>
     <div class="pricing-grid">
       <div class="pricing-card reveal">
@@ -599,30 +631,20 @@ nav {
     </ul>
   </section>
 
-  <!-- EMAIL -->
-  <section class="section reveal">
-    <div class="section-label">Updates</div>
-    <h2>Stay in the loop</h2>
-    <p class="sub" style="margin-bottom:24px">New ISO builds, variant drops, and public beta announcements.</p>
-    <form class="email-form" action="https://holmium.us.lemonsqueezy.com/email-subscribe" method="POST" target="_blank">
-      <input type="email" name="email" placeholder="your@email.com" required>
-      <button type="submit">Subscribe</button>
-    </form>
-  </section>
-
   <!-- FOOTER -->
   <footer>
-    <div class="footer-grid">
-      <div class="footer-cell"><a href="https://github.com/nOS-Coding/Holmium" target="_blank">GitHub</a></div>
-      <div class="footer-cell"><a href="#faq">FAQ</a></div>
-      <div class="footer-cell"><a href="mailto:nosteamsuppo@gmail.com">Contact</a></div>
-      <div class="footer-cell"><a href="#pricing">Pricing</a></div>
+    <div class="footer-links">
+      <a href="https://github.com/nOS-Coding/Holmium" target="_blank">GitHub</a>
+      <a href="#faq">FAQ</a>
+      <a href="mailto:nosteamsuppo@gmail.com">Contact</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#downloads">Downloads</a>
     </div>
     <div class="legal">
       <span>&copy; 2026 Holmium</span>
       <a href="#">Privacy</a>
       <a href="#">Terms</a>
-      <a href="mailto:nosteamsuppo@gmail.com">nosteamsuppo@gmail.com</a>
+      <span>nosteamsuppo@gmail.com</span>
     </div>
   </footer>
 
@@ -695,45 +717,23 @@ nav {
   draw();
 })();
 
-// ─── Terminal typing ───
+// ─── Terminal cycling ───
 (function() {
-  const commands = [
-    { text: 'holmium --status', output: 'GPU: NVIDIA RTX 5070  |  VRAM: 9.2/12 GB\nModel: llama-3.2-8b-awq  |  Status: ready\nUptime: 2h 14m  |  Temperature: 62°C' },
-    { text: 'cat /etc/holmium/license', output: 'Status: active\nExpires: 2026-07-30\nMachine: a1b2c3d4e5f6\nSigned: Ed25519 ✓' },
+  const lines = [
+    ['holmium --status', 'GPU: NVIDIA RTX 5070  |  VRAM: 9.2/12 GB\nModel: llama-3.2-8b-awq  |  Status: ready\nUptime: 2h 14m  |  Temperature: 62°C'],
+    ['cat /etc/holmium/license', 'Status: active\nExpires: 2026-07-30\nMachine: a1b2c3d4e5f6\nSigned: Ed25519 OK'],
   ];
-  let cmdIdx = 0;
-  const typedLine = document.getElementById('typed-line');
-  const cursor = document.getElementById('cursor');
-  const output = document.getElementById('terminal-output');
-  let charIdx = 0;
-  let isDeleting = false;
+  let idx = 0;
+  const el = document.getElementById('typed-line');
+  const out = document.getElementById('terminal-output');
 
-  function type() {
-    const cmd = commands[cmdIdx];
-    if (!isDeleting) {
-      if (charIdx < cmd.text.length) {
-        typedLine.textContent = cmd.text.substring(0, charIdx + 1);
-        charIdx++;
-        setTimeout(type, 25 + Math.random() * 20);
-      } else {
-        output.innerHTML = cmd.output.replace(/\n/g, '<br>');
-        output.style.color = 'var(--gray-500)';
-        setTimeout(() => { isDeleting = true; type(); }, 2000);
-      }
-    } else {
-      if (charIdx > 0) {
-        charIdx--;
-        typedLine.textContent = cmd.text.substring(0, charIdx);
-        setTimeout(type, 15);
-      } else {
-        isDeleting = false;
-        output.innerHTML = '';
-        cmdIdx = (cmdIdx + 1) % commands.length;
-        setTimeout(type, 500);
-      }
-    }
+  function show() {
+    el.textContent = lines[idx][0];
+    out.innerHTML = lines[idx][1].replace(/\n/g, '<br>');
+    idx = (idx + 1) % lines.length;
   }
-  setTimeout(type, 600);
+  show();
+  setInterval(show, 4000);
 })();
 
 // ─── Scroll reveal ───
