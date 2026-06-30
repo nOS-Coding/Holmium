@@ -157,36 +157,9 @@ nav {
 .btn-outline { background: transparent; color: var(--gray-100); border: 1px solid var(--gray-700); }
 .btn-outline:hover { border-color: var(--gray-500); background: var(--gray-900); }
 
-/* ─── TERMINAL ─── */
-.terminal-box {
-  margin-top: 40px;
-  background: var(--black-soft); border: 1px solid var(--gray-800);
-  border-radius: 6px; overflow: hidden; max-width: 100%;
+.hero-diagram {
+  margin-top: 32px; display: flex; align-items: center; gap: 24px;
 }
-.terminal-header {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 16px;
-  background: var(--gray-900); border-bottom: 1px solid var(--gray-800);
-}
-.terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
-.terminal-dot:nth-child(1) { background: #ef4444; }
-.terminal-dot:nth-child(2) { background: var(--amber); }
-.terminal-dot:nth-child(3) { background: #22c55e; }
-.terminal-title { font-size: 0.75rem; color: var(--gray-600); margin-left: 8px; }
-
-.terminal-body {
-  padding: 20px; font-size: 0.875rem; line-height: 1.8; min-height: 120px;
-  color: var(--gray-400);
-}
-.terminal-body .prompt { color: var(--teal); }
-.terminal-body .cmd { color: var(--gray-200); }
-.terminal-body .output { color: var(--gray-500); }
-.terminal-cursor {
-  display: inline-block; width: 8px; height: 1.1em;
-  background: var(--teal); vertical-align: text-bottom;
-  animation: blink 1s step-end infinite;
-}
-@keyframes blink { 50% { opacity: 0; } }
 
 /* ─── SECTION ─── */
 .section {
@@ -410,18 +383,15 @@ nav {
       <a href="#variants" class="btn btn-outline">See variants</a>
     </div>
 
-    <!-- Terminal -->
-    <div class="terminal-box reveal">
-      <div class="terminal-header">
-        <span class="terminal-dot"></span>
-        <span class="terminal-dot"></span>
-        <span class="terminal-dot"></span>
-        <span class="terminal-title">holmium — tty1</span>
-      </div>
-      <div class="terminal-body">
-        <div><span class="prompt">user@holmium:~$</span> <span class="cmd" id="typed-line"></span><span class="terminal-cursor"></span></div>
-        <div id="terminal-output" style="margin-top:8px"></div>
-      </div>
+    <div class="hero-diagram">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" style="opacity:0.4">
+        <rect x="10" y="10" width="60" height="60" rx="4" stroke="var(--teal)" stroke-width="1.5" fill="none"/>
+        <line x1="10" y1="30" x2="70" y2="30" stroke="var(--teal)" stroke-width="1"/>
+        <circle cx="40" cy="50" r="8" fill="var(--teal)" opacity="0.3"/>
+        <circle cx="40" cy="50" r="4" fill="var(--teal)"/>
+        <line x1="40" y1="10" x2="40" y2="42" stroke="var(--amber)" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="40" y1="58" x2="40" y2="70" stroke="var(--amber)" stroke-width="1" stroke-dasharray="3 3"/>
+      </svg>
     </div>
   </section>
 
@@ -699,24 +669,7 @@ nav {
   draw();
 })();
 
-// ─── Terminal cycling ───
-(function() {
-  const lines = [
-    ['holmium --status', 'GPU: NVIDIA RTX 5070  |  VRAM: 9.2/12 GB\nModel: llama-3.2-8b-awq  |  Status: ready\nUptime: 2h 14m  |  Temperature: 62°C'],
-    ['cat /etc/holmium/license', 'Status: active\nExpires: 2026-07-30\nMachine: a1b2c3d4e5f6\nSigned: Ed25519 OK'],
-  ];
-  let idx = 0;
-  const el = document.getElementById('typed-line');
-  const out = document.getElementById('terminal-output');
 
-  function show() {
-    el.textContent = lines[idx][0];
-    out.innerHTML = lines[idx][1].replace(/\n/g, '<br>');
-    idx = (idx + 1) % lines.length;
-  }
-  show();
-  setInterval(show, 4000);
-})();
 
 // ─── Scroll reveal ───
 (function() {
