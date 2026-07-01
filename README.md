@@ -32,7 +32,7 @@ your model, your assistant.
 
 ## Features
 
-Holmium ships with **146 tools** across **35 capability modules**:
+Holmium ships with **153 tools** across **35 capability modules**:
 
 - **Local AI inference** — Qwen3.6-35B-A3B-AWQ via vLLM on your own GPU. 3.6B active params per token. AWQ group-size 128/64 quantization.
 - **Code generation** — Generate, review, debug, and refactor code in any language with full project context.
