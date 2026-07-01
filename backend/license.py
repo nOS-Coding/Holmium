@@ -221,6 +221,7 @@ def create_license_file(
         "signature": signature_b64,
         "machine_id": get_machine_id(),
         "activated_at": datetime.now(timezone.utc).isoformat(),
+        "last_verified_at": datetime.now(timezone.utc).isoformat(),
     }
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2))
@@ -268,15 +269,17 @@ def check_license(
         if not valid:
             return False, msg
 
-        # Update stored expiry from server
+        # Update stored expiry and last verified from server
+        now = datetime.now(timezone.utc)
         if data and data.get("expiry"):
             lic["expiry"] = data["expiry"]
-            create_license_file(
-                license_key=data["license_key"],
-                email=data.get("email", lic.get("email", "")),
-                expiry=data["expiry"],
-                signature_b64=lic.get("signature", ""),
-            )
+        lic["last_verified_at"] = now.isoformat()
+        create_license_file(
+            license_key=data["license_key"],
+            email=data.get("email", lic.get("email", "")),
+            expiry=data["expiry"],
+            signature_b64=lic.get("signature", ""),
+        )
         days_left = _days_until(lic.get("expiry", ""))
         if days_left < 0:
             return False, "License has expired. Renew at holmium.ai."
@@ -290,6 +293,21 @@ def check_license(
             pk = load_public_key()
         except FileNotFoundError:
             return False, "No public key found. Corrupt installation."
+
+    # 30-day online verification required
+    last_verified = lic.get("last_verified_at", "")
+    if last_verified:
+        try:
+            lv = datetime.fromisoformat(last_verified)
+            if lv.tzinfo is None:
+                lv = lv.replace(tzinfo=timezone.utc)
+            days_since_verify = (datetime.now(timezone.utc) - lv).days
+            if days_since_verify >= 30:
+                return False, f"License not verified in {days_since_verify} days. Connect to the internet and try again."
+        except (ValueError, TypeError):
+            pass
+    else:
+        return False, "License has not been verified online yet. Connect to the internet and try again."
 
     if not verify_license(
         lic.get("signature", ""),

@@ -624,6 +624,13 @@ class DualBootScreen(Screen):
     #os-list {
         margin: 1 0;
     }
+    #size-form {
+        margin: 1 0;
+        display: none;
+    }
+    #size-form.visible {
+        display: block;
+    }
     #status-text {
         padding: 1 0;
     }
@@ -646,6 +653,10 @@ class DualBootScreen(Screen):
                         cb = Checkbox(f"{os_info['display_name']:12} ({os_info['label']})", id=f"os-cb-{i}", value=False)
                         self.checkboxes[i] = cb
                         yield cb
+            with Vertical(id="size-form"):
+                yield Static("Set partition sizes:", id="size-label")
+                yield Input(placeholder="Holmium root size in GB (e.g. 100)", id="holmium-size")
+                yield Static("[#666666]Secondary OS gets the remaining space[/]", id="remaining-hint")
             yield Static("", id="status-text")
             with Horizontal(classes="nav-bar"):
                 yield Button("Back", id="back-btn")
@@ -663,8 +674,21 @@ class DualBootScreen(Screen):
             self.app.data["dual_boot_oses"] = selected
             if not selected:
                 self.query_one("#status-text", Static).update("[#4CAF50]Single-boot: Holmium OS will be the only OS[/]")
+                self.query_one("#size-form", Vertical).remove_class("visible")
+                self.app.data["secondary_partition_size"] = 0
             else:
-                self.query_one("#status-text", Static).update(f"[#00BCD4]Keeping: {', '.join(selected)}[/]")
+                size_input = self.query_one("#holmium-size", Input)
+                size_str = size_input.value.strip()
+                try:
+                    holmium_size_gb = int(size_str)
+                    if holmium_size_gb < 20:
+                        self.query_one("#status-text", Static).update("[#FF4444]Holmium root must be at least 20 GB[/]")
+                        return
+                    self.app.data["holmium_root_size"] = holmium_size_gb
+                except ValueError:
+                    self.query_one("#status-text", Static).update("[#FF4444]Enter a valid size in GB[/]")
+                    return
+                self.query_one("#status-text", Static).update(f"[#00BCD4]Keeping: {', '.join(selected)} — Holmium: {holmium_size_gb} GB[/]")
             self.app.push_screen(LicenseScreen())
 
 
@@ -1063,7 +1087,15 @@ class InstallScreen(Screen):
         if disk:
             run_cmd(["sgdisk", "-o", f"/dev/{disk}"], check=False)
             run_cmd(["sgdisk", "-n", "1:0:+512M", "-t", "1:ef00", f"/dev/{disk}"], check=False)
-            run_cmd(["sgdisk", "-n", "2:0:0", "-t", "2:8300", f"/dev/{disk}"], check=False)
+            holmium_size = self.app.data.get("holmium_root_size", 0)
+            if holmium_size > 0:
+                holmium_sectors = holmium_size * 1024 * 2  # approx sectors per GB
+                run_cmd(["sgdisk", "-n", f"2:0:+{holmium_sectors}", "-t", "2:8300", f"/dev/{disk}"], check=False)
+                run_cmd(["sgdisk", "-n", "3:0:0", "-t", "3:8300", f"/dev/{disk}"], check=False)
+                self.app.data["has_secondary_partition"] = True
+            else:
+                run_cmd(["sgdisk", "-n", "2:0:0", "-t", "2:8300", f"/dev/{disk}"], check=False)
+                self.app.data["has_secondary_partition"] = False
             run_cmd(["partprobe", f"/dev/{disk}"], check=False)
         await asyncio.sleep(2)
 
@@ -1128,6 +1160,8 @@ class InstallScreen(Screen):
             "gpu_variant": self.app.data.get("gpu_variant", "nvidia-std"),
             "target_disk": self.app.data.get("target_disk", ""),
             "dual_boot_oses": self.app.data.get("dual_boot_oses", []),
+            "has_secondary_partition": self.app.data.get("has_secondary_partition", False),
+            "secondary_partition": f"/dev/{self.app.data.get('target_disk', '')}3" if self.app.data.get("has_secondary_partition") else "",
             "timezone": self.app.data.get("timezone", "UTC"),
             "tech_level": self.app.data.get("tech_level", "Intermediate"),
             "model_style": self.app.data.get("model_style", "balanced"),
