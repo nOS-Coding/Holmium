@@ -32,7 +32,7 @@ your model, your assistant.
 
 ## Features
 
-Holmium ships with **146 tools** across **35 capability modules**:
+Holmium ships with **146 tools** across **30 capability modules**:
 
 - **Local AI inference** — Qwen3.6-35B-A3B-AWQ via vLLM on your own GPU. 3.6B active params per token. AWQ group-size 128/64 quantization.
 - **Code generation** — Generate, review, debug, and refactor code in any language with full project context.
@@ -122,22 +122,23 @@ Then Holmium's TUI appears on the display. You can start talking immediately.
 
 ## Dual-Boot
 
-Holmium can coexist with another Linux distribution. During installation, the Install Manager
-scans all partitions and detects existing OSes. Check the ones you want to keep, and Holmium
-configures GRUB to chain-load them.
+Holmium wipes the target disk completely, then you set partition sizes for Holmium and
+optionally a secondary OS. The Install Manager walks through it — pick a disk, set the space
+for each OS, and Holmium partitions accordingly.
 
 **Supported secondary OSes:**
 
-| OS | Detection | Boot Method |
-|----|-----------|-------------|
-| Debian | Automatic | GRUB chain-load |
-| KDE Neon | Automatic | GRUB chain-load |
-| Ubuntu | Automatic | GRUB chain-load |
-| Fedora | Automatic | GRUB chain-load |
-| Nobara | Automatic | GRUB chain-load |
-| CachyOS | Automatic | GRUB chain-load |
+| OS | Boot Method |
+|----|-------------|
+| Debian | GRUB chain-load |
+| KDE Neon | GRUB chain-load |
+| Ubuntu | GRUB chain-load |
+| Fedora | GRUB chain-load |
+| Nobara | GRUB chain-load |
+| CachyOS | GRUB chain-load |
 
-It also detects any other Linux installation with ext4/btrfs on a separate partition.
+You install the second OS yourself later. Holmium saves the partition layout and always knows
+where to find it for GRUB configuration.
 
 ---
 
