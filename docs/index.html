@@ -368,21 +368,14 @@ nav {
 /* ─── CAPABILITIES SCROLLER ─── */
 .caps-container {
   background: var(--black-soft); border: 1px solid var(--gray-800);
-  border-radius: 6px; overflow: hidden; max-height: 400px;
-  position: relative;
+  border-radius: 6px; overflow: hidden;
 }
-.caps-container::after {
-  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-  height: 60px;
-  background: linear-gradient(transparent, var(--black-soft));
-  pointer-events: none;
-}
-.caps-scroll { padding: 16px 20px; overflow-y: auto; max-height: 400px; }
+.caps-scroll { padding: 16px 20px; }
 .caps-line {
   display: flex; gap: 8px; padding: 3px 0;
   font-size: 0.8125rem; color: var(--gray-500);
   opacity: 0; transform: translateX(-8px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 .caps-line.visible { opacity: 1; transform: translateX(0); }
 .caps-line .cap-cat {
@@ -879,10 +872,7 @@ nav {
 
   let idx = 0;
   function addNext() {
-    if (idx >= caps.length) {
-      setTimeout(() => { idx = 0; scroll.innerHTML = ''; addNext(); }, 4000);
-      return;
-    }
+    if (idx >= caps.length) return;
     const c = caps[idx];
     const div = document.createElement('div');
     div.className = 'caps-line';
@@ -890,7 +880,7 @@ nav {
     scroll.appendChild(div);
     requestAnimationFrame(() => div.classList.add('visible'));
     idx++;
-    setTimeout(addNext, 200 + Math.random() * 150);
+    setTimeout(addNext, 80 + Math.random() * 60);
   }
   addNext();
 })();
