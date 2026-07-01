@@ -422,7 +422,7 @@ nav {
   <section class="hero reveal" id="hero">
     <div class="hero-badge"><span>v1.0.0-beta</span> &middot; Arch Linux + OpenRC</div>
     <h1>Run your AI<br><span class="highlight">on your own PC</span></h1>
-    <p>Holmium is a local-first AI operating system. Boot, get an assistant with <strong style="color:var(--gray-300)">146 tools</strong> across <strong style="color:var(--gray-300)">30 categories</strong>. No cloud, no telemetry, no accounts. Your GPU does the work, your data stays yours.</p>
+    <p>Holmium is a local-first AI operating system. Boot, get an assistant with <strong style="color:var(--gray-300)">146 tools</strong> across <strong style="color:var(--gray-300)">30 categories</strong>. Chat with LLMs, generate images with FLUX.1, produce videos with HunyuanVideo, analyze images with vision, transcribe speech, browse the web, write code, manage email, run containers, and control your NAS — all offline on your own GPU. No cloud, no telemetry, no accounts.</p>
     <div class="hero-buttons">
       <a href="#pricing" class="btn btn-primary">Get a license</a>
       <a href="#demo" class="btn btn-outline">See what it does</a>
@@ -448,13 +448,21 @@ nav {
 
     <div class="features-grid">
       <div class="feature-card reveal"><div class="feature-icon">&#9650;</div><div><h4>Qwen3.6-35B-A3B-AWQ</h4><p>35B-param MoE model, AWQ-quantized. 3.6B active params per token. Runs on 6 GB+ VRAM via vLLM with CUDA or ROCm. GPT-4-class reasoning on your own GPU.</p></div></div>
-      <div class="feature-card reveal"><div class="feature-icon">&#9670;</div><div><h4>146 tools, 30 categories</h4><p>Code generation, web research, email, file ops, finance, GitHub, containers, NAS, vision, voice, image gen (FLUX.1), video gen (HunyuanVideo), and more — all local.</p></div></div>
-      <div class="feature-card reveal"><div class="feature-icon">&#9644;</div><div><h4>Multi-modal by default</h4><p>Vision (image analysis), FLUX.1 image generation, HunyuanVideo generation, Whisper STT (large-v3), Kokoro TTS (am_michael voice). One system, all modalities.</p></div></div>
-      <div class="feature-card reveal"><div class="feature-icon">&#9671;</div><div><h4>Companion apps</h4><p>Native macOS (AppKit), Windows (WPF), and Android (Material You) apps with Chat, Dashboard, and Settings. Linux uses the TUI on tty1. All connect via WireGuard.</p></div></div>
-      <div class="feature-card reveal"><div class="feature-icon">&#10005;</div><div><h4>Zero telemetry</h4><p>No analytics, no tracking, no logging of prompts. Only daily license check transmits your hashed machine ID — nothing else.</p></div></div>
-      <div class="feature-card reveal"><div class="feature-icon">&#8634;</div><div><h4>Free updates</h4><p>All updates are free while your subscription is active. Rebuild your ISO anytime. Cancel and keep access until end of billing period.</p></div></div>
-      <div class="feature-card reveal"><div class="feature-icon">&#9711;</div><div><h4>NAS-ready</h4><p>Built-in WireGuard VPN, Samba/NFS exports, and automated backup tooling. Turn your AI PC into a home server when it's not running models.</p></div></div>
-      <div class="feature-card reveal"><div class="feature-icon">&#9641;</div><div><h4>Dual-boot + headless</h4><p>Install alongside Debian, Ubuntu, Fedora, KDE Neon, Nobara, or CachyOS. Or run without a monitor — SSH in from any companion app.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#9670;</div><div><h4>146 tools, 30 categories</h4><p>Code gen, web research, email, file ops, finance, GitHub, containers, NAS, vision, voice, image gen, video gen, and more — all local.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#9724;</div><div><h4>Image generation (FLUX.1)</h4><p>FLUX.1-schnell text-to-image. Style prompts. 512x512 up to 1024x1024. AWQ-quantized for fast local generation on your GPU.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#9654;</div><div><h4>Video generation (HunyuanVideo)</h4><p>Text-to-video via HunyuanVideo with FramePack pipeline. Generate short clips from prompts. Runs entirely on your local GPU.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#9671;</div><div><h4>Vision — understand images</h4><p>Analyze screenshots, photos, diagrams, and documents. Ask questions about any image. OCR text extraction.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#9835;</div><div><h4>Voice — STT + TTS</h4><p>Whisper large-v3 for speech-to-text. Kokoro (am_michael) for text-to-speech. Speak to Holmium, hear it respond.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#10005;</div><div><h4>Zero telemetry</h4><p>No analytics, no tracking, no prompt logging. Only daily license check transmits your hashed machine ID — nothing else.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#128187;</div><div><h4>Code generation &amp; automation</h4><p>Generate, review, debug, refactor code in any language. Write scripts, manage projects, run CI/CD pipelines. Full shell access with safety guards.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#127760;</div><div><h4>Web research &amp; browsing</h4><p>Search the web, scrape pages, fetch Wikipedia, YouTube, Reddit, news. Headless Chromium for JS-heavy sites. Fill forms, click buttons, extract data.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#9993;</div><div><h4>Email &amp; communication</h4><p>Full IMAP/SMTP integration. Read, search, compose, reply with AI assistance. Calendar events, contacts, reminders.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#128200;</div><div><h4>Finance &amp; data analysis</h4><p>Real-time stock prices, portfolio tracking, trends. Analyze CSV, JSON, SQL with Pandas-backed engine. Generate charts and stats.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#128274;</div><div><h4>Encrypted vault &amp; secrets</h4><p>Store API keys, passwords, tokens — encrypted at rest. AI-accessible when unlocked. Auto-fills credentials during tasks.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#128268;</div><div><h4>NAS &amp; file sharing</h4><p>Samba/NFS exports, WebDAV. Built-in WireGuard VPN. Automated backup tooling. Turn your AI PC into a home server.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#128266;</div><div><h4>Containers &amp; deployment</h4><p>Docker / Podman management. Pull images, run containers, exec, view logs, compose stacks. Deploy apps alongside AI.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#128640;</div><div><h4>Dual-boot + companion apps</h4><p>Install alongside Debian, Ubuntu, Fedora, and more. Native apps for macOS (AppKit), Windows (WPF), Android (Material You). Headless SSH access.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#128161;</div><div><h4>DeepThink extended reasoning</h4><p>Chain-of-thought mode for complex multi-step problems. Code reasoning, strategic planning, math proofs. Think before you speak.</p></div></div>
     </div>
   </section>
 
@@ -462,8 +470,8 @@ nav {
   <section class="section" id="demo">
     <div class="reveal">
       <div class="section-label">Capabilities</div>
-      <h2>What Holmium can do</h2>
-      <p class="sub">Every capability is a tool your assistant can use. Type naturally and Holmium picks the right tool. Here's the full stack — <strong style="color:var(--gray-300)">146 tools</strong> across <strong style="color:var(--gray-300)">30 modules</strong>.</p>
+      <h2>Everything Holmium can do</h2>
+      <p class="sub">Every capability is a tool your assistant can use. Type naturally and Holmium picks the right tool. From code and containers to image generation and video — <strong style="color:var(--gray-300)">146 tools</strong> across <strong style="color:var(--gray-300)">30 modules</strong>.</p>
     </div>
     <div class="caps-container reveal" id="caps-container">
       <div class="caps-scroll">
@@ -619,7 +627,15 @@ nav {
     <ul class="faq-list reveal">
       <li class="faq-item">
         <button class="faq-q" onclick="faq(this)"><span class="indicator">+</span> What model does Holmium use?</button>
-        <div class="faq-a">The core model is <strong style="color:var(--gray-300)">Qwen3.6-35B-A3B-AWQ</strong> — a 35-billion-parameter Mixture-of-Experts model by Qwen, AWQ-quantized for consumer GPUs. Only 3.6B parameters activate per token, giving GPT-4-class performance in 6 GB+ VRAM. It also uses FLUX.1 for image generation, HunyuanVideo for video, Whisper large-v3 for speech-to-text, and Kokoro (am_michael) for text-to-speech.</div>
+        <div class="faq-a">The core model is <strong style="color:var(--gray-300)">Qwen3.6-35B-A3B-AWQ</strong> — a 35-billion-parameter Mixture-of-Experts model by Qwen, AWQ-quantized for consumer GPUs. Only 3.6B parameters activate per token, giving GPT-4-class performance in 6 GB+ VRAM. It also uses <strong style="color:var(--gray-300)">FLUX.1-schnell</strong> for image generation, <strong style="color:var(--gray-300)">HunyuanVideo</strong> for video, <strong style="color:var(--gray-300)">Whisper large-v3</strong> for speech-to-text, and <strong style="color:var(--gray-300)">Kokoro (am_michael)</strong> for text-to-speech.</div>
+      </li>
+      <li class="faq-item">
+        <button class="faq-q" onclick="faq(this)"><span class="indicator">+</span> Can Holmium generate images?</button>
+        <div class="faq-a"><strong style="color:var(--gray-300)">Yes.</strong> Holmium ships with <strong style="color:var(--gray-300)">FLUX.1-schnell</strong> — an AWQ-quantized text-to-image model. Generate up to 1024x1024, control style, aspect ratio, seed, and negative prompts. Batch generation runs on your GPU alongside LLM inference.</div>
+      </li>
+      <li class="faq-item">
+        <button class="faq-q" onclick="faq(this)"><span class="indicator">+</span> Can Holmium generate video?</button>
+        <div class="faq-a"><strong style="color:var(--gray-300)">Yes.</strong> Holmium includes <strong style="color:var(--gray-300)">HunyuanVideo</strong> with the FramePack pipeline for text-to-video generation. Describe a scene and Holmium produces a video clip. Custom durations, motion control, and keyframes are supported.</div>
       </li>
       <li class="faq-item">
         <button class="faq-q" onclick="faq(this)"><span class="indicator">+</span> Will installing Holmium delete my data?</button>
@@ -832,36 +848,36 @@ nav {
 // ─── Capabilities scroller ───
 (function() {
   const caps = [
-    { cat: 'Code', name: 'Generate, review, debug, refactor', desc: 'Any language. Full project context.' },
-    { cat: 'Web', name: 'Search, scrape, fetch', desc: 'Web, Wikipedia, Reddit, YouTube, news.' },
-    { cat: 'Files', name: 'Read, write, move, search', desc: 'Full filesystem access with safety checks.' },
-    { cat: 'Shell', name: 'Run commands, manage processes', desc: 'SSH, scripts, monitoring, automation.' },
-    { cat: 'Git', name: 'Commits, PRs, issues, CI/CD', desc: 'Local + GitHub integration.' },
-    { cat: 'Email', name: 'Read, search, send, reply', desc: 'Full IMAP/SMTP. Compose with AI.' },
-    { cat: 'Finance', name: 'Stocks, portfolio, history', desc: 'Real-time prices, suggestions, trends.' },
-    { cat: 'Data', name: 'Analyze CSV, JSON, SQL', desc: 'Pandas-backed analysis, charts, stats.' },
-    { cat: 'Vision', name: 'Examine images, extract text', desc: 'Ask questions about any image.' },
-    { cat: 'Images', name: 'Generate via FLUX.1-schnell', desc: 'Text-to-image. Style prompts. 512x512–1024x1024.' },
-    { cat: 'Video', name: 'Generate via HunyuanVideo', desc: 'Text-to-video. FramePack pipeline.' },
-    { cat: 'Voice', name: 'STT (Whisper) + TTS (Kokoro)', desc: 'Speak to Holmium, hear it respond.' },
-    { cat: 'NAS', name: 'Samba/NFS exports, WebDAV', desc: 'Turn your AI PC into a home server.' },
-    { cat: 'Network', name: 'LAN scan, WireGuard VPN', desc: 'Discover devices, secure tunnel.' },
-    { cat: 'Containers', name: 'Manage Docker/Podman', desc: 'Pull, run, exec, logs, compose.' },
-    { cat: 'Calendar', name: 'Events, schedules, reminders', desc: 'iCal, Google Calendar, tasks.' },
-    { cat: 'Contacts', name: 'Manage, learn, suggest', desc: 'Auto-learns from conversations.' },
-    { cat: 'Notes', name: 'Create, search, organize', desc: 'Markdown notes with full-text search.' },
-    { cat: 'Vault', name: 'Encrypted secret storage', desc: 'API keys, passwords — AI-accessible but encrypted at rest.' },
-    { cat: 'Browser', name: 'Headless Chromium', desc: 'Navigate, click, fill forms, scrape JS pages.' },
-    { cat: 'Clipboard', name: 'Cross-device clipboard sync', desc: 'Copy on macOS, paste on Holmium.' },
-    { cat: 'Monitor', name: 'System health, alerts', desc: 'CPU/GPU/RAM/disk. Proactive notifications.' },
-    { cat: 'Remote', name: 'SSH, file transfer, RDP', desc: 'Control other devices on your LAN.' },
-    { cat: 'Raspberry Pi', name: 'GPIO, I2C, sensors', desc: 'Control Pi pins, read sensors, automate.' },
-    { cat: 'Audio', name: 'Play, record, transcribe', desc: 'System audio, mic input, music library.' },
-    { cat: 'Documents', name: 'Parse PDF, DOCX, XLSX', desc: 'Extract text, tables, metadata.' },
-    { cat: 'DeepThink', name: 'Extended chain-of-thought', desc: 'Complex multi-step reasoning.' },
-    { cat: 'Plugins', name: 'Custom tool plugins', desc: 'Extend Holmium with your own tools.' },
-    { cat: 'Cowork', name: 'Collaborative editing', desc: 'Multi-user file editing session.' },
-    { cat: 'App Control', name: 'Launch, focus, manage apps', desc: 'Control GUI apps on the Holmium PC.' },
+    { cat: 'Code', name: 'Generate, review, debug, refactor', desc: 'Any language — Python, Rust, JS, C++, Go, Java, and more. Full project context. Git integration.' },
+    { cat: 'Web', name: 'Search, scrape, fetch, browse', desc: 'Web, Wikipedia, Reddit, YouTube, Hacker News, financial data. Headless Chromium for JS-rendered pages.' },
+    { cat: 'Files', name: 'Read, write, move, search, edit', desc: 'Full filesystem access with permission guards. Grep, sed, bulk rename, diff, patch, tree view.' },
+    { cat: 'Shell', name: 'Run commands, manage processes', desc: 'SSH sessions, cron automation, background jobs, process monitoring, systemd service management.' },
+    { cat: 'Git', name: 'Commits, PRs, issues, CI/CD, review', desc: 'Local + GitHub integration. Create PRs, review diffs, comment on issues, trigger Actions.' },
+    { cat: 'Email', name: 'Read, search, send, reply, manage', desc: 'Full IMAP/SMTP. Multiple accounts. Compose with AI, Smart Reply, thread search, folder management.' },
+    { cat: 'Finance', name: 'Stocks, portfolio, alerts, trends', desc: 'Real-time prices, historical charts, moving averages, portfolio tracker, buy/sell signals, news sentiment.' },
+    { cat: 'Data', name: 'Analyze CSV, JSON, SQL, Excel', desc: 'Pandas-backed. Statistics, correlation, visualization, pivot tables, natural-language queries to SQL.' },
+    { cat: 'Vision', name: 'Analyze images, extract text, OCR', desc: 'Ask questions about screenshots, diagrams, photos. Table extraction, handwriting recognition, barcode scan.' },
+    { cat: 'Image Gen', name: 'FLUX.1-schnell text-to-image', desc: 'AWQ-quantized. Style prompts, aspect ratios, up to 1024×1024. Batch generation, seed control, negative prompts.' },
+    { cat: 'Video Gen', name: 'HunyuanVideo + FramePack', desc: 'Text-to-video pipeline. Custom durations, motion control, keyframes. Runs on GPU alongside inference.' },
+    { cat: 'Voice', name: 'STT (Whisper) + TTS (Kokoro)', desc: 'Large-v3 Whisper for transcription — 100+ languages. Kokoro am_michael TTS. Speaker diarization, voice commands.' },
+    { cat: 'NAS', name: 'Samba, NFS, WebDAV, backups', desc: 'Export directories as network shares. Rsync automation, ZFS snapshots, S3-compatible backup target.' },
+    { cat: 'Network', name: 'LAN scan, WireGuard VPN, DNS', desc: 'Discover devices, port scan, traffic monitor, WireGuard tunnel management, local DNS resolver.' },
+    { cat: 'Containers', name: 'Docker / Podman management', desc: 'Pull, run, exec, logs, compose stacks. Image builds, registry push/pull, resource limits, health checks.' },
+    { cat: 'Calendar', name: 'Events, schedules, reminders', desc: 'iCal sync, Google Calendar API, natural language scheduling. Set reminders, detect conflicts, recurring events.' },
+    { cat: 'Contacts', name: 'Manage, learn, suggest', desc: 'Auto-learns names and preferences from conversations. vCard import/export, deduplication.' },
+    { cat: 'Notes', name: 'Create, search, organize, link', desc: 'Markdown notes with full-text search. Bi-directional links, tags, code blocks, export to PDF/Markdown.' },
+    { cat: 'Vault', name: 'Encrypted secret storage', desc: 'API keys, passwords, tokens — AES-256-GCM encrypted at rest. AI-accessible when unlocked. Auto-fill during tasks.' },
+    { cat: 'Browser', name: 'Headless Chromium automation', desc: 'Navigate, click, fill forms, scroll, take screenshots, extract rendered HTML. Login flows, pagination, SPAs.' },
+    { cat: 'Clipboard', name: 'Cross-device clipboard sync', desc: 'Copy text on macOS/Windows/Android, paste on Holmium. Encrypted WebSocket transport.' },
+    { cat: 'Monitor', name: 'System health, GPU stats, alerts', desc: 'CPU/GPU/RAM/disk/power. Real-time charts. Proactive alerts on high temp, OOM, disk near full.' },
+    { cat: 'Remote', name: 'SSH, RDP, VNC, file transfer', desc: 'Connect to LAN machines. Remote desktop access via RDP. scp/rsync file transfer. Multi-hop SSH.' },
+    { cat: 'Raspberry Pi', name: 'GPIO, I2C, SPI, sensors', desc: 'Read temperature/humidity/PIR. Control servos, LEDs, relays. Automate home tasks via Holmium.' },
+    { cat: 'Audio', name: 'Play, record, transcribe, mix', desc: 'System audio playback, mic input, music library. Transcode audio files. Audio fingerprint, beat detection.' },
+    { cat: 'Documents', name: 'Parse PDF, DOCX, XLSX, PPTX', desc: 'Extract text, tables, images, metadata. Convert between formats. Document comparison, redaction.' },
+    { cat: 'DeepThink', name: 'Extended chain-of-thought reasoning', desc: 'Complex multi-step problems. Math proofs, strategy planning, code architecture, legal analysis.' },
+    { cat: 'Plugins', name: 'Custom tool plugins in Python', desc: 'Extend Holmium with your own tools. Hot-reloadable plugin system. Published plugin registry.' },
+    { cat: 'Cowork', name: 'Collaborative editing sessions', desc: 'Real-time multi-user file editing. Shared terminals. Peer-to-peer via WebRTC.' },
+    { cat: 'App Control', name: 'Launch, focus, manage GUI apps', desc: 'Control apps on the Holmium PC — launch, window management, keyboard/mouse automation via xdotool.' },
   ];
 
   const container = document.getElementById('caps-container');
