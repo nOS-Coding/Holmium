@@ -720,7 +720,7 @@ class LicenseScreen(Screen):
             if not self.license_key or not self.email:
                 status_box.update("[bold #FF4444]Please enter both license key and email.[/]")
                 return
-            if not re.match(r'^HOLM-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$', self.license_key):
+            if not re.match(r'^HOLM-(?:[A-Z0-9]{4}-){3,}[A-Z0-9]{4}$|^HOLM-DEV-[A-Z0-9-]+$', self.license_key):
                 status_box.update("[bold #FF4444]Invalid license key format. Expected: HOLM-XXXX-XXXX-XXXX[/]")
                 return
             self._verify_online(status_box)

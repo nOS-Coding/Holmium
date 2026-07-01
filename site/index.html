@@ -326,18 +326,70 @@ nav {
 .legal a { color: var(--gray-600); text-decoration: none; }
 .legal a:hover { color: var(--gray-400); }
 
-/* ─── SHIMMER LOADING ─── */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+/* ─── TERMINAL DEMO ─── */
+.term-demo {
+  background: #0d0d12; border: 1px solid var(--gray-800);
+  border-radius: 8px; overflow: hidden; width: 100%; max-width: 520px;
+  font-size: 0.8125rem; box-shadow: 0 0 40px rgba(20,184,166,0.04);
+}
+.term-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--gray-800);
+}
+.term-dots { display: flex; gap: 6px; }
+.term-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--gray-700); }
+.term-dots span:first-child { background: #ff5f57; }
+.term-dots span:nth-child(2) { background: #ffbd2e; }
+.term-dots span:nth-child(3) { background: #28c840; }
+.term-title { color: var(--gray-600); font-size: 0.6875rem; margin-left: 8px; }
+.term-body { padding: 16px 18px; min-height: 120px; }
+.term-line { margin-bottom: 4px; word-break: break-all; }
+.term-green { color: #50fa7b; }
+.term-blue { color: #8be9fd; }
+.term-prompt { color: var(--gray-500); margin: 0 8px; }
+.term-typed { color: var(--gray-300); }
+.term-typed::after {
+  content: '|';
+  animation: blink 0.9s step-end infinite;
+  color: var(--teal);
+  font-weight: 700;
+}
+.term-output {
+  color: var(--gray-500); line-height: 1.6; margin: 2px 0 2px 20px;
+  white-space: pre-wrap;
+}
+.term-output .hl-teal { color: var(--teal); }
+.term-output .hl-amber { color: var(--amber); }
+@keyframes blink {
+  0%, 100% { opacity: 1; } 50% { opacity: 0; }
 }
 
-/* ─── TAGLINE ANIMATION ─── */
-.typing-text::after {
-  content: '|';
-  animation: blink 1s step-end infinite;
-  color: var(--teal);
+/* ─── CAPABILITIES SCROLLER ─── */
+.caps-container {
+  background: var(--black-soft); border: 1px solid var(--gray-800);
+  border-radius: 6px; overflow: hidden; max-height: 400px;
+  position: relative;
 }
+.caps-container::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, var(--black-soft));
+  pointer-events: none;
+}
+.caps-scroll { padding: 16px 20px; overflow-y: auto; max-height: 400px; }
+.caps-line {
+  display: flex; gap: 8px; padding: 3px 0;
+  font-size: 0.8125rem; color: var(--gray-500);
+  opacity: 0; transform: translateX(-8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.caps-line.visible { opacity: 1; transform: translateX(0); }
+.caps-line .cap-cat {
+  color: var(--teal); min-width: 120px; flex-shrink: 0;
+}
+.caps-line .cap-name { color: var(--amber); }
+.caps-line .cap-desc { color: var(--gray-500); }
 </style>
 </head>
 <body>
@@ -377,21 +429,19 @@ nav {
   <section class="hero reveal" id="hero">
     <div class="hero-badge"><span>v1.0.0-beta</span> &middot; Arch Linux + OpenRC</div>
     <h1>Run your AI<br><span class="highlight">on your own PC</span></h1>
-    <p>Holmium is a local-first AI operating system. Boot, get an assistant. No cloud, no telemetry, no accounts. Your GPU does the work, your data stays yours.</p>
+    <p>Holmium is a local-first AI operating system. Boot, get an assistant with <strong style="color:var(--gray-300)">146 tools</strong> across <strong style="color:var(--gray-300)">35 categories</strong>. No cloud, no telemetry, no accounts. Your GPU does the work, your data stays yours.</p>
     <div class="hero-buttons">
       <a href="#pricing" class="btn btn-primary">Get a license</a>
-      <a href="#variants" class="btn btn-outline">See variants</a>
+      <a href="#demo" class="btn btn-outline">See what it does</a>
     </div>
 
     <div class="hero-diagram">
-      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" style="opacity:0.4">
-        <rect x="10" y="10" width="60" height="60" rx="4" stroke="var(--teal)" stroke-width="1.5" fill="none"/>
-        <line x1="10" y1="30" x2="70" y2="30" stroke="var(--teal)" stroke-width="1"/>
-        <circle cx="40" cy="50" r="8" fill="var(--teal)" opacity="0.3"/>
-        <circle cx="40" cy="50" r="4" fill="var(--teal)"/>
-        <line x1="40" y1="10" x2="40" y2="42" stroke="var(--amber)" stroke-width="1" stroke-dasharray="3 3"/>
-        <line x1="40" y1="58" x2="40" y2="70" stroke="var(--amber)" stroke-width="1" stroke-dasharray="3 3"/>
-      </svg>
+      <div class="term-demo" id="term-demo">
+        <div class="term-bar"><span class="term-dots"><span></span><span></span><span></span></span><span class="term-title">holmium@ai:~</span></div>
+        <div class="term-body" id="term-body">
+          <div class="term-line"><span class="term-green">holmium@ai</span>:<span class="term-blue">~</span><span class="term-prompt">$</span> <span class="term-typed"></span></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -400,18 +450,32 @@ nav {
     <div class="reveal">
       <div class="section-label">What</div>
       <h2>Your personal AI OS</h2>
-      <p class="sub">Holmium is Arch Linux + OpenRC tuned for local LLM inference. It boots into a TUI assistant connected to a vLLM backend running on your GPU. No browser needed.</p>
+      <p class="sub">Holmium is Arch Linux + OpenRC tuned for local LLM inference. It boots into a TUI assistant connected to a vLLM backend running on your GPU. The core model is <strong style="color:var(--gray-300)">Qwen3.6-35B-A3B-AWQ</strong> — a 35-billion-parameter MoE model with AWQ quantization, giving you GPT-4-class reasoning on consumer GPUs.</p>
     </div>
 
     <div class="features-grid">
-      <div class="feature-card reveal"><div class="feature-icon">&#9650;</div><div><h4>Local-first</h4><p>Everything runs on your machine. vLLM + llama.cpp for inference. Zero outbound traffic for prompts or responses.</p></div></div>
-      <div class="feature-card reveal"><div class="feature-icon">&#9670;</div><div><h4>GPU-native</h4><p>CUDA (NVIDIA) or ROCm (AMD) acceleration. AWQ quantized models for maximum throughput on consumer GPUs.</p></div></div>
-      <div class="feature-card reveal"><div class="feature-icon">&#9644;</div><div><h4>Dual-boot ready</h4><p>Install alongside Debian, Ubuntu, Fedora, KDE Neon, Nobara, or CachyOS. Auto-detects existing OSes and sets up GRUB chain-loading.</p></div></div>
-      <div class="feature-card reveal"><div class="feature-icon">&#9671;</div><div><h4>Companion apps</h4><p>Native macOS (AppKit), Windows (WPF), and Android (Material You) apps with Chat, Dashboard, and Settings. Linux uses the TUI on tty1.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#9650;</div><div><h4>Qwen3.6-35B-A3B-AWQ</h4><p>35B-param MoE model, AWQ-quantized. 3.6B active params per token. Runs on 6 GB+ VRAM via vLLM with CUDA or ROCm. GPT-4-class reasoning on your own GPU.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#9670;</div><div><h4>146 tools, 35 categories</h4><p>Code generation, web research, email, file ops, finance, GitHub, containers, NAS, vision, voice, image gen (FLUX.1), video gen (HunyuanVideo), and more — all local.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#9644;</div><div><h4>Multi-modal by default</h4><p>Vision (image analysis), FLUX.1 image generation, HunyuanVideo generation, Whisper STT (large-v3), Kokoro TTS (am_michael voice). One system, all modalities.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#9671;</div><div><h4>Companion apps</h4><p>Native macOS (AppKit), Windows (WPF), and Android (Material You) apps with Chat, Dashboard, and Settings. Linux uses the TUI on tty1. All connect via WireGuard.</p></div></div>
       <div class="feature-card reveal"><div class="feature-icon">&#10005;</div><div><h4>Zero telemetry</h4><p>No analytics, no tracking, no logging of prompts. Only daily license check transmits your hashed machine ID — nothing else.</p></div></div>
       <div class="feature-card reveal"><div class="feature-icon">&#8634;</div><div><h4>Free updates</h4><p>All updates are free while your subscription is active. Rebuild your ISO anytime. Cancel and keep access until end of billing period.</p></div></div>
       <div class="feature-card reveal"><div class="feature-icon">&#9711;</div><div><h4>NAS-ready</h4><p>Built-in WireGuard VPN, Samba/NFS exports, and automated backup tooling. Turn your AI PC into a home server when it's not running models.</p></div></div>
-      <div class="feature-card reveal"><div class="feature-icon">&#9641;</div><div><h4>Headless mode</h4><p>Run without a monitor. SSH in from any companion app (macOS/Windows/Android). The TUI runs on tty1, but you never need to look at it.</p></div></div>
+      <div class="feature-card reveal"><div class="feature-icon">&#9641;</div><div><h4>Dual-boot + headless</h4><p>Install alongside Debian, Ubuntu, Fedora, KDE Neon, Nobara, or CachyOS. Or run without a monitor — SSH in from any companion app.</p></div></div>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES DEMO -->
+  <section class="section" id="demo">
+    <div class="reveal">
+      <div class="section-label">Capabilities</div>
+      <h2>What Holmium can do</h2>
+      <p class="sub">Every capability is a tool your assistant can use. Type naturally and Holmium picks the right tool. Here's the full stack — <strong style="color:var(--gray-300)">146 tools</strong> across <strong style="color:var(--gray-300)">35 modules</strong>.</p>
+    </div>
+    <div class="caps-container reveal" id="caps-container">
+      <div class="caps-scroll">
+        <div class="caps-line" data-cat="core">Loading capabilities...</div>
+      </div>
     </div>
   </section>
 
@@ -526,7 +590,7 @@ nav {
           <li>Free updates while active</li>
           <li>Cancel anytime</li>
         </ul>
-        <button class="buy-btn" onclick="window.LemonSqueezy?.Url?.Open?.({url: 'https://holmium.lemonsqueezy.com/checkout/buy/monthly'});">Subscribe monthly</button>
+        <button class="buy-btn" onclick="window.LemonSqueezy?.Url?.Open?.({url: 'https://holmiumai.lemonsqueezy.com/checkout/buy/0fa7543e-6348-4667-ba0c-81470657c268'});">Subscribe monthly</button>
       </div>
       <div class="pricing-card featured reveal">
         <h4>Yearly</h4>
@@ -539,7 +603,7 @@ nav {
           <li>Cancel anytime</li>
           <li style="color:var(--teal)">Save ~$11/year</li>
         </ul>
-        <button class="buy-btn" onclick="window.LemonSqueezy?.Url?.Open?.({url: 'https://holmium.lemonsqueezy.com/checkout/buy/yearly'});">Subscribe yearly</button>
+        <button class="buy-btn" onclick="window.LemonSqueezy?.Url?.Open?.({url: 'https://holmiumai.lemonsqueezy.com/checkout/buy/ee76b0f1-a789-4117-94b6-14afa50e08f3'});">Subscribe yearly</button>
       </div>
     </div>
     <p style="margin-top:16px;font-size:0.75rem;text-align:center;color:var(--gray-600)">License tied to <code style="color:var(--gray-500)">/etc/machine-id</code>. Questions? <a href="mailto:nosteamsuppo@gmail.com" style="color:var(--teal)">nosteamsuppo@gmail.com</a></p>
@@ -552,6 +616,10 @@ nav {
       <h2>Common questions</h2>
     </div>
     <ul class="faq-list reveal">
+      <li class="faq-item">
+        <button class="faq-q" onclick="faq(this)"><span class="indicator">+</span> What model does Holmium use?</button>
+        <div class="faq-a">The core model is <strong style="color:var(--gray-300)">Qwen3.6-35B-A3B-AWQ</strong> — a 35-billion-parameter Mixture-of-Experts model by Qwen, AWQ-quantized for consumer GPUs. Only 3.6B parameters activate per token, giving GPT-4-class performance in 6 GB+ VRAM. It also uses FLUX.1 for image generation, HunyuanVideo for video, Whisper large-v3 for speech-to-text, and Kokoro (am_michael) for text-to-speech.</div>
+      </li>
       <li class="faq-item">
         <button class="faq-q" onclick="faq(this)"><span class="indicator">+</span> What hardware do I need?</button>
         <div class="faq-a">Minimum: NVIDIA RTX 5060 (6 GB VRAM) or AMD RX 9060 XT (8 GB VRAM), 16 GB system RAM, 512 GB storage. Recommended: RTX 5070+ or RX 9070 XT, 32 GB RAM, 1 TB NVMe. Integrated GPUs will not work.</div>
@@ -648,7 +716,6 @@ nav {
       ctx.fill();
     }
 
-    // draw connections
     ctx.strokeStyle = 'rgba(20, 184, 166, 0.04)';
     ctx.lineWidth = 1;
     for (let i = 0; i < particles.length; i++) {
@@ -669,6 +736,147 @@ nav {
   draw();
 })();
 
+
+// ─── Terminal typing demo ───
+(function() {
+  const lines = [
+    { cmd: 'holmium --info', out: 'Holmium v1.0.0-beta • Qwen3.6-35B-A3B-AWQ • 146 tools' },
+    { cmd: 'holmium tools --list', out: '35 categories loaded. Code generation, web research, email, finance, GitHub, containers...' },
+    { cmd: 'holmium run --mode think', out: 'DeepThink enabled. Extended reasoning for complex problems.' },
+    { cmd: 'holmium status', out: 'GPU: RTX 5070 (12 GB) • VRAM: 6.2 GB used • Model: Qwen3.6-35B-A3B-AWQ • Uptime: 2h 14m' },
+    { cmd: undefined, out: 'Ready. Your AI is online.' },
+  ];
+
+  const el = document.querySelector('.term-typed');
+  const body = document.querySelector('.term-body');
+  if (!el || !body) return;
+
+  let lineIdx = 0;
+  let charIdx = 0;
+  let isTyping = true;
+  let lastOutput = null;
+
+  function tick() {
+    const line = lines[lineIdx];
+    if (!line) {
+      setTimeout(tick, 4000);
+      lineIdx = 0;
+      return;
+    }
+
+    if (line.cmd !== undefined && isTyping) {
+      if (charIdx < line.cmd.length) {
+        el.textContent = line.cmd.slice(0, charIdx + 1);
+        charIdx++;
+        setTimeout(tick, 40 + Math.random() * 30);
+        return;
+      }
+      isTyping = false;
+      setTimeout(tick, 300);
+      return;
+    }
+
+    if (line.cmd !== undefined && !isTyping) {
+      el.textContent = line.cmd;
+      // insert output
+      const outEl = document.createElement('div');
+      outEl.className = 'term-output';
+      outEl.textContent = line.out;
+      body.appendChild(outEl);
+      lastOutput = outEl;
+      lineIdx++;
+      charIdx = 0;
+      isTyping = true;
+      if (lines[lineIdx] && lines[lineIdx].cmd === undefined) {
+        // last "Ready" line has no cmd
+        setTimeout(tick, 600);
+      } else {
+        setTimeout(tick, 800);
+      }
+      return;
+    }
+
+    if (line.cmd === undefined) {
+      // final status line
+      const outEl = document.createElement('div');
+      outEl.className = 'term-output';
+      outEl.innerHTML = '<span class="hl-teal">' + line.out + '</span>';
+      body.appendChild(outEl);
+      setTimeout(() => {
+        // reset after 6s
+        lineIdx = 0;
+        charIdx = 0;
+        isTyping = true;
+        el.textContent = '';
+        body.querySelectorAll('.term-output').forEach(e => e.remove());
+        setTimeout(tick, 1000);
+      }, 5000);
+      return;
+    }
+
+    tick();
+  }
+  tick();
+})();
+
+
+// ─── Capabilities scroller ───
+(function() {
+  const caps = [
+    { cat: 'Code', name: 'Generate, review, debug, refactor', desc: 'Any language. Full project context.' },
+    { cat: 'Web', name: 'Search, scrape, fetch', desc: 'Web, Wikipedia, Reddit, YouTube, news.' },
+    { cat: 'Files', name: 'Read, write, move, search', desc: 'Full filesystem access with safety checks.' },
+    { cat: 'Shell', name: 'Run commands, manage processes', desc: 'SSH, scripts, monitoring, automation.' },
+    { cat: 'Git', name: 'Commits, PRs, issues, CI/CD', desc: 'Local + GitHub integration.' },
+    { cat: 'Email', name: 'Read, search, send, reply', desc: 'Full IMAP/SMTP. Compose with AI.' },
+    { cat: 'Finance', name: 'Stocks, portfolio, history', desc: 'Real-time prices, suggestions, trends.' },
+    { cat: 'Data', name: 'Analyze CSV, JSON, SQL', desc: 'Pandas-backed analysis, charts, stats.' },
+    { cat: 'Vision', name: 'Examine images, extract text', desc: 'Ask questions about any image.' },
+    { cat: 'Images', name: 'Generate via FLUX.1-schnell', desc: 'Text-to-image. Style prompts. 512x512–1024x1024.' },
+    { cat: 'Video', name: 'Generate via HunyuanVideo', desc: 'Text-to-video. FramePack pipeline.' },
+    { cat: 'Voice', name: 'STT (Whisper) + TTS (Kokoro)', desc: 'Speak to Holmium, hear it respond.' },
+    { cat: 'NAS', name: 'Samba/NFS exports, WebDAV', desc: 'Turn your AI PC into a home server.' },
+    { cat: 'Network', name: 'LAN scan, WireGuard VPN', desc: 'Discover devices, secure tunnel.' },
+    { cat: 'Containers', name: 'Manage Docker/Podman', desc: 'Pull, run, exec, logs, compose.' },
+    { cat: 'Calendar', name: 'Events, schedules, reminders', desc: 'iCal, Google Calendar, tasks.' },
+    { cat: 'Contacts', name: 'Manage, learn, suggest', desc: 'Auto-learns from conversations.' },
+    { cat: 'Notes', name: 'Create, search, organize', desc: 'Markdown notes with full-text search.' },
+    { cat: 'Vault', name: 'Encrypted secret storage', desc: 'API keys, passwords — AI-accessible but encrypted at rest.' },
+    { cat: 'Browser', name: 'Headless Chromium', desc: 'Navigate, click, fill forms, scrape JS pages.' },
+    { cat: 'Clipboard', name: 'Cross-device clipboard sync', desc: 'Copy on macOS, paste on Holmium.' },
+    { cat: 'Monitor', name: 'System health, alerts', desc: 'CPU/GPU/RAM/disk. Proactive notifications.' },
+    { cat: 'Remote', name: 'SSH, file transfer, RDP', desc: 'Control other devices on your LAN.' },
+    { cat: 'Raspberry Pi', name: 'GPIO, I2C, sensors', desc: 'Control Pi pins, read sensors, automate.' },
+    { cat: 'Audio', name: 'Play, record, transcribe', desc: 'System audio, mic input, music library.' },
+    { cat: 'Documents', name: 'Parse PDF, DOCX, XLSX', desc: 'Extract text, tables, metadata.' },
+    { cat: 'DeepThink', name: 'Extended chain-of-thought', desc: 'Complex multi-step reasoning.' },
+    { cat: 'Plugins', name: 'Custom tool plugins', desc: 'Extend Holmium with your own tools.' },
+    { cat: 'Cowork', name: 'Collaborative editing', desc: 'Multi-user file editing session.' },
+    { cat: 'App Control', name: 'Launch, focus, manage apps', desc: 'Control GUI apps on the Holmium PC.' },
+  ];
+
+  const container = document.getElementById('caps-container');
+  if (!container) return;
+  const scroll = container.querySelector('.caps-scroll');
+  scroll.innerHTML = '';
+
+  let idx = 0;
+  function addNext() {
+    if (idx >= caps.length) {
+      setTimeout(() => { idx = 0; scroll.innerHTML = ''; addNext(); }, 4000);
+      return;
+    }
+    const c = caps[idx];
+    const div = document.createElement('div');
+    div.className = 'caps-line';
+    div.innerHTML = `<span class="cap-cat">${c.cat}</span><span class="cap-name">${c.name}</span><span class="cap-desc">— ${c.desc}</span>`;
+    scroll.appendChild(div);
+    requestAnimationFrame(() => div.classList.add('visible'));
+    idx++;
+    setTimeout(addNext, 200 + Math.random() * 150);
+  }
+  addNext();
+})();
 
 
 // ─── Scroll reveal ───

@@ -20,6 +20,11 @@ personal AI assistant — accessible from every device you own. Install the ISO 
 with a capable GPU, and you get a fully autonomous AI that runs locally, has zero cloud
 dependencies, and is reachable from Windows, macOS, Linux, and Android.
 
+The core model is **Qwen3.6-35B-A3B-AWQ** — a 35-billion-parameter Mixture-of-Experts LLM
+with activation-aware weight quantization (AWQ), delivering GPT-4-class reasoning on consumer
+GPUs. At inference time only 3.6B parameters are active per token, meaning it fits in 6 GB VRAM
+while maintaining near-full-precision quality.
+
 No data leaves your home. No subscriptions to cloud APIs. No telemetry. Just your hardware,
 your model, your assistant.
 
@@ -27,24 +32,35 @@ your model, your assistant.
 
 ## Features
 
-- **Local AI inference** — Run LLMs on your own GPU via vLLM. No internet required after setup.
-- **File & NAS system** — Holmium exposes its entire disk as a network drive. Send and receive
-  files from any device, like your own private Google Drive.
-- **Code generation** — Generate, review, debug, and refactor code in any language.
+Holmium ships with **146 tools** across **35 capability modules**:
+
+- **Local AI inference** — Qwen3.6-35B-A3B-AWQ via vLLM on your own GPU. 3.6B active params per token. AWQ group-size 128/64 quantization.
+- **Code generation** — Generate, review, debug, and refactor code in any language with full project context.
 - **Web research** — Search the web, fetch pages, scrape Wikipedia, Reddit, YouTube transcripts, news.
-- **Email** — Fetch, read, search, send, reply, and manage your inbox.
-- **Image & video generation** — Generate images via FLUX.1. Analyze images with vision models.
-- **Stock analysis** — Real-time prices, portfolio tracking, history, suggestions.
-- **System automation** — Run shell commands, manage processes, schedule tasks, set up monitors.
-- **GitHub & Git integration** — Manage repos, issues, PRs, commits, CI/CD workflows.
-- **Contacts, notes, todos** — Built-in personal management.
-- **Encrypted vault** — Store secrets securely, accessible only by Holmium.
-- **Clipboard sync** — Share clipboard across all your devices.
-- **Remote device control** — SSH, file transfer, process management on connected devices.
-- **Deep-think mode** — Extended reasoning for complex problems.
-- **Voice** — Text-to-speech and speech-to-text (Whisper).
-- **Image examination** — Upload images and ask questions about them.
-- **Proactive monitoring** — Holmium watches your system and alerts you to issues.
+- **File & NAS system** — Read, write, move, search files. Expose via Samba/NFS/WebDAV. Full filesystem access with safety checks.
+- **Shell & system control** — Run commands, manage processes, schedule tasks, set up monitors. SSH into connected devices.
+- **GitHub & Git integration** — Manage repos, issues, PRs, commits, CI/CD workflows. Local + remote.
+- **Email** — Read, search, send, reply, manage your inbox. Full IMAP/SMTP with AI composition.
+- **Finance & stock analysis** — Real-time prices, portfolio tracking, history, trends, suggestions.
+- **Data analysis** — Parse and analyze CSV, JSON, SQL with Pandas-backed engine. Charts, stats, reports.
+- **Multi-modal vision** — Upload any image and ask questions. Extract text, describe scenes, analyze diagrams.
+- **Image generation** — Text-to-image via FLUX.1-schnell. Style prompts, multiple resolutions.
+- **Video generation** — Text-to-video via HunyuanVideo FramePack pipeline.
+- **Voice** — Speech-to-text via Whisper large-v3. Text-to-speech via Kokoro (am_michael voice).
+- **Containers** — Pull, run, exec, compose with Docker/Podman integration.
+- **Browser automation** — Headless Chromium. Navigate, click, fill forms, scrape JS-rendered pages.
+- **Clipboard sync** — Seamless copy-paste between all your devices.
+- **Calendar & scheduling** — Events, reminders, iCal, Google Calendar sync.
+- **Contacts** — Manage, auto-learn from conversations, suggest new entries.
+- **Notes & documents** — Markdown notes with full-text search. Parse PDF, DOCX, XLSX.
+- **Encrypted vault** — Store secrets (API keys, passwords) encrypted at rest, accessible only by Holmium.
+- **LAN scanning & VPN** — Discover devices, secure WireGuard tunnel to your home network.
+- **Remote device control** — SSH, file transfer, app control on connected LAN devices.
+- **Raspberry Pi control** — GPIO, I2C, sensors, automation.
+- **System monitoring** — CPU/GPU/RAM/disk health, proactive alerts, scheduled checks.
+- **DeepThink mode** — Extended chain-of-thought reasoning for complex multi-step problems.
+- **Cowork** — Collaborative multi-user file editing session.
+- **Custom plugins** — Extend Holmium with your own tools via the plugin system.
 
 ---
 
@@ -54,16 +70,16 @@ your model, your assistant.
 
 Choose the variant that matches your GPU:
 
-| Variant | GPU | Kernel | Backend |
-|---------|-----|--------|---------|
-| **NVIDIA Standard** | RTX 5060 — RTX 5070 | NVIDIA-optimized | vLLM CUDA |
-| **NVIDIA Pro** | RTX 5080 — RTX 5090 | NVIDIA-optimized, max perf | vLLM CUDA |
-| **AMD** | RX 9060 XT — RX 9070 XT | AMD-optimized | vLLM ROCm |
+| Variant | GPU | Backend |
+|---------|-----|---------|
+| **NVIDIA** | RTX 5060 — RTX 5090 | vLLM CUDA + AWQ |
+| **AMD** | RX 9060 XT — RX 9070 XT | vLLM ROCm + AWQ |
 
 All variants require **16 GB RAM** minimum and **512 GB storage**.
 
 ### 2. Write to USB
- You can use any tool: Rufus, Balena-Etcher, etc.
+
+Use any tool: Rufus, Balena-Etcher, `dd`.
 
 ### 3. Boot & Install
 
@@ -74,7 +90,7 @@ guides you through:
 2. **Variant selection** — Picks the right GPU profile or lets you choose
 3. **Disk setup** — Select target disk (with clear warnings)
 4. **Dual-boot** — Detects existing OS installations, pick which to keep
-5. **License activation** — Enter your license key or start a trial
+5. **License activation** — Enter your HOLM-XXXX-XXXX-XXXX key, verify via Lemon Squeezy
 6. **User profile** — Tell Holmium about yourself so it adapts to you
 7. **Install** — Partitions, formats, installs, configures GRUB, sets up GPU drivers
 
@@ -82,7 +98,7 @@ guides you through:
 
 After installation, Holmium boots into the **First-Boot Wizard** where you:
 
-- Verify your license
+- Verify your license via Lemon Squeezy
 - Set your name, goals, and preferences
 - Connect to WiFi / Ethernet
 - Configure dual-boot GRUB entries
@@ -121,8 +137,8 @@ Holmium is accessible from every major platform:
 
 A native macOS windowed application:
 - **Chat tab** — Message history, text input, send, file attachments, typing indicator
-- **Dashboard tab** — Live system status: GPU temp, RAM, disk, uptime, quick actions (Screenshot, Clipboard Sync, Open TUI)
-- **Settings tab** — Server address, port, auth token, auto-connect, clipboard sync, notifications, test connection
+- **Dashboard tab** — Live system status: GPU temp, RAM, disk, uptime, quick actions
+- **Settings tab** — Server address, port, auth token, auto-connect, clipboard sync, notifications
 - Connection status indicator (green/yellow/red) in the status bar
 - Auto-reconnect with backoff
 
@@ -130,8 +146,8 @@ A native macOS windowed application:
 
 A native WPF windowed application:
 - **Chat tab** — Message list with bubble styling, text input, send button, connection status bar
-- **Dashboard tab** — Status cards (GPU, RAM, Disk, Uptime), quick action buttons (Screenshot, Clipboard Sync, Open in Browser)
-- **Settings tab** — Server address, port, auth token, auto-connect, clipboard sync, notifications, start on boot, test connection
+- **Dashboard tab** — Status cards (GPU, RAM, Disk, Uptime), quick action buttons
+- **Settings tab** — Server address, port, auth token, auto-connect, clipboard sync, notifications
 - Connection state: Connected / Disconnected / Connecting / Error with colored indicator
 - Auto-reconnect with exponential backoff
 
@@ -140,8 +156,7 @@ A native WPF windowed application:
 A Material Design 3 native Android application:
 - **Chat tab** — Real-time messaging with Holmium
 - **Devices tab** — Connected device management
-- **Settings tab** — Server configuration, theme (Light/Dark/System), clipboard sync, notifications, TTS, test connection
-- Connection status indicator with dynamic colors
+- **Settings tab** — Server configuration, theme (Light/Dark/System), clipboard sync, notifications
 - Bottom navigation with three tabs
 
 ### Linux (TUI + CLI)
@@ -149,7 +164,6 @@ A Material Design 3 native Android application:
 - Full TUI (Textual) runs on the Holmium PC display (tty1) — the primary interface
 - CLI commands available via `holmium` tool for scripting and automation
 - WebSocket connection to the backend for real-time interaction
-- Multiple modes: Work, Think, Image, Help
 
 ---
 
@@ -167,7 +181,7 @@ The manager walks through:
 3. **GPU Variant** — Auto-recommends variant based on detected GPU
 4. **Disk Selection** — Lists all disks with size, model, type; destructive warning
 5. **Dual-Boot** — Checkboxes for each detected OS
-6. **License** — Enter HOLM-XXXX-XXXX-XXXX key, verify online, or 7-day trial
+6. **License** — Enter HOLM-XXXX-XXXX-XXXX key, verify via Lemon Squeezy
 7. **User Profile** — 7 questions: name, use case, technical level, goal, style, topics, timezone
 8. **Summary** — Full config review with Install / Back
 9. **Install** — 9-step progress: partition, format, base, GRUB, packages, dual-boot, GPU, license, finalize
@@ -195,7 +209,7 @@ The manager walks through:
 │                     │ HTTP                           │
 │  ┌──────────────────▼───────────────────────────┐   │
 │  │  vLLM Inference Server                       │   │
-│  │  (CUDA / ROCm)                               │   │
+│  │  Qwen3.6-35B-A3B-AWQ (CUDA / ROCm)          │   │
 │  └──────────────────────────────────────────────┘   │
 │                                                     │
 │  ┌──────────┐ ┌──────────┐ ┌──────────────────┐    │
@@ -222,15 +236,17 @@ The manager walks through:
 
 Holmium is **$8/month** or **$85/year** (cancel anytime).
 
+- License key delivered instantly via Lemon Squeezy after purchase
+- Ed25519-signed, machine-bound, one license per machine
 - Free updates for life while your subscription is active
 
-Payment is handled through **Stripe**. After payment, your license key is delivered
-automatically. Enter it in the Install Manager or First-Boot Wizard.
+[Subscribe monthly](https://holmiumai.lemonsqueezy.com/checkout/buy/0fa7543e-6348-4667-ba0c-81470657c268) •
+[Subscribe yearly](https://holmiumai.lemonsqueezy.com/checkout/buy/ee76b0f1-a789-4117-94b6-14afa50e08f3)
 
 ---
 
 <div align="center">
-  <sub>Built with Arch Linux • OpenRC • FastAPI • Textual • vLLM • WireGuard</sub>
+  <sub>Built with Arch Linux • OpenRC • Qwen3.6-35B-A3B-AWQ • FastAPI • Textual • vLLM • WireGuard • FLUX.1 • Whisper • Kokoro</sub>
   <br>
   <sub> nOS_Coding. All rights reserved.</sub>
 </div>
