@@ -6,9 +6,28 @@ MODEL_DIR="/usr/share/holmium/models/${MODEL_REPO}"
 HF_BASE="https://huggingface.co/${MODEL_REPO}/resolve/main"
 API_URL="https://huggingface.co/api/models/${MODEL_REPO}"
 
-echo "[*] Installing vLLM with ROCm support..."
+# Detect GPU variant from installed config
+VLLM_PKG="vllm"
+if [ -f /etc/holmium/config.json ]; then
+    VARIANT=$(python3 -c "
+import json
+try:
+    cfg = json.load(open('/etc/holmium/config.json'))
+    print(cfg.get('gpu_variant', ''))
+except: print('')" 2>/dev/null || echo "")
+    if [ "$VARIANT" = "amd" ]; then
+        VLLM_PKG="vllm[rocm]"
+        echo "[*] AMD variant detected — installing vLLM with ROCm support"
+    else
+        echo "[*] NVIDIA variant detected — installing vLLM with CUDA support"
+    fi
+else
+    echo "[*] No config found, defaulting to vLLM (CUDA)"
+fi
+
+echo "[*] Installing vLLM (${VLLM_PKG})..."
 pip install --upgrade pip
-pip install vllm[rocm]
+pip install "${VLLM_PKG}"
 
 echo "[*] Creating /run/holmium/..."
 install -d -m 755 /run/holmium
