@@ -547,6 +547,15 @@ nav {
       <h2>Download an ISO</h2>
       <p class="sub">Each variant is a bootable ISO. Flash to USB with <code style="color:var(--gray-400)">dd</code> and boot.</p>
     </div>
+    <div class="reveal" style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:6px;padding:20px;margin-top:16px">
+      <p style="color:var(--amber-bright);font-size:0.875rem;font-weight:600;margin-bottom:8px">⚠ DANGER — READ BEFORE INSTALLING</p>
+      <p style="color:var(--gray-400);font-size:0.8125rem;line-height:1.7">
+        Installing Holmium will <strong style="color:var(--gray-300)">wipe the target drive completely</strong>.
+        The installer repartitions and formats the entire disk. There is no "keep files" option.
+        <strong style="color:var(--gray-300)">Back up everything you care about</strong> before booting the ISO.
+        Dual-booting is supported (Holmium detects existing OSes), but the target disk itself will be erased.
+      </p>
+    </div>
     <div class="variants-grid" style="margin-top:24px">
       <div class="variant-card reveal">
         <h4>NVIDIA</h4>
@@ -619,6 +628,14 @@ nav {
       <li class="faq-item">
         <button class="faq-q" onclick="faq(this)"><span class="indicator">+</span> What model does Holmium use?</button>
         <div class="faq-a">The core model is <strong style="color:var(--gray-300)">Qwen3.6-35B-A3B-AWQ</strong> — a 35-billion-parameter Mixture-of-Experts model by Qwen, AWQ-quantized for consumer GPUs. Only 3.6B parameters activate per token, giving GPT-4-class performance in 6 GB+ VRAM. It also uses FLUX.1 for image generation, HunyuanVideo for video, Whisper large-v3 for speech-to-text, and Kokoro (am_michael) for text-to-speech.</div>
+      </li>
+      <li class="faq-item">
+        <button class="faq-q" onclick="faq(this)"><span class="indicator">+</span> Will installing Holmium delete my data?</button>
+        <div class="faq-a"><strong style="color:var(--gray-300)">Yes.</strong> The installer repartitions and formats the entire target drive. All existing data on that disk will be permanently lost. If using dual-boot, you keep your other OS partitions (detected automatically), but the Holmium target disk is erased. <strong style="color:var(--amber)">Always back up your data before installing.</strong></div>
+      </li>
+      <li class="faq-item">
+        <button class="faq-q" onclick="faq(this)"><span class="indicator">+</span> What are the risks?</button>
+        <div class="faq-a">Installing an operating system always carries risk. Holmium is beta software. Potential issues include: <strong style="color:var(--gray-300)">data loss</strong> (full disk erase), <strong style="color:var(--gray-300)">bootloader conflicts</strong> with existing OSes, <strong style="color:var(--gray-300)">GPU driver incompatibility</strong> on unsupported hardware, and <strong style="color:var(--gray-300)">network configuration issues</strong> on unusual setups. Holmium targets NVIDIA RTX 5060–5090 and AMD RX 9060 XT–9070 XT GPUs. Anything else may not work or may cause instability. <strong style="color:var(--amber)">Back up all data and have a recovery USB ready.</strong></div>
       </li>
       <li class="faq-item">
         <button class="faq-q" onclick="faq(this)"><span class="indicator">+</span> What hardware do I need?</button>

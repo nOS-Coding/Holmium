@@ -81,7 +81,19 @@ All variants require **16 GB RAM** minimum and **512 GB storage**.
 
 Use any tool: Rufus, Balena-Etcher, `dd`.
 
-### 3. Boot & Install
+### 3. ⚠ Read before booting
+
+Installing Holmium **will wipe the target drive completely**. The installer repartitions and
+formats the entire disk. There is no "keep files" option. **Back up everything you care about**
+before proceeding. Have a recovery USB ready for your current OS.
+
+Additional risks:
+- **Bootloader conflicts** — dual-boot setups may require manual GRUB repair
+- **GPU driver issues** — only RTX 5060–5090 (NVIDIA) and RX 9060 XT–9070 XT (AMD) are supported
+- **Network problems** — unusual network hardware may need manual configuration
+- **Beta software** — Holmium is in beta; expect rough edges and breaking changes
+
+### 4. Boot & Install
 
 Boot from the USB. The **Holmium Install Manager** launches automatically — a full TUI that
 guides you through:
