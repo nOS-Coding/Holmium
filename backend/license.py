@@ -212,6 +212,7 @@ def create_license_file(
     expiry: str,
     signature_b64: str = "",
     path: Path = LICENSE_PATH,
+    machine_ids: Optional[list[str]] = None,
 ):
     """Write license file to disk."""
     data = {
@@ -219,7 +220,7 @@ def create_license_file(
         "email": email,
         "expiry": expiry,
         "signature": signature_b64,
-        "machine_id": get_machine_id(),
+        "machine_ids": machine_ids if machine_ids else [get_machine_id()],
         "activated_at": datetime.now(timezone.utc).isoformat(),
         "last_verified_at": datetime.now(timezone.utc).isoformat(),
     }
@@ -269,16 +270,26 @@ def check_license(
         if not valid:
             return False, msg
 
-        # Update stored expiry and last verified from server
+        # Update stored expiry, last_verified, and machine IDs
         now = datetime.now(timezone.utc)
         if data and data.get("expiry"):
             lic["expiry"] = data["expiry"]
         lic["last_verified_at"] = now.isoformat()
+        machine_ids = lic.get("machine_ids", [])
+        if not isinstance(machine_ids, list):
+            machine_ids = [machine_ids]
+        if machine_id not in machine_ids:
+            if len(machine_ids) >= 3:
+                return False, "License already activated on 3 machines. Deactivate one first."
+            machine_ids.append(machine_id)
+        lic["machine_ids"] = machine_ids
+        # Rewrite license file preserving machine IDs
         create_license_file(
-            license_key=data["license_key"],
+            license_key=data["license_key"] if data else lic.get("license_key", ""),
             email=data.get("email", lic.get("email", "")),
-            expiry=data["expiry"],
+            expiry=data["expiry"] if data else lic.get("expiry", ""),
             signature_b64=lic.get("signature", ""),
+            machine_ids=lic["machine_ids"],
         )
         days_left = _days_until(lic.get("expiry", ""))
         if days_left < 0:
@@ -328,9 +339,11 @@ def check_license(
         return False, "Invalid expiry date in license."
 
     current_mid = get_machine_id()
-    stored_mid = lic.get("machine_id", "")
-    if stored_mid and stored_mid != current_mid:
-        return False, "License bound to different machine. Contact support."
+    stored_mids = lic.get("machine_ids", [])
+    if not isinstance(stored_mids, list):
+        stored_mids = [stored_mids]
+    if stored_mids and current_mid not in stored_mids:
+        return False, "License bound to a different machine (max 3). Contact support."
 
     days_left = _days_until(lic["expiry"])
     if days_left < 7:

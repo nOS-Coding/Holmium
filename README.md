@@ -247,10 +247,10 @@ The manager walks through:
 
 ## Pricing
 
-Holmium is **$8/month** or **$85/year** (cancel anytime).
+Holmium is **$5/month** or **$55/year** (cancel anytime).
 
 - License key delivered instantly via Lemon Squeezy after purchase
-- Ed25519-signed, machine-bound, one license per machine
+- Ed25519-signed, machine-bound, one license per 3 machines
 - Free updates for life while your subscription is active
 
 [Subscribe monthly](https://holmiumai.lemonsqueezy.com/checkout/buy/0fa7543e-6348-4667-ba0c-81470657c268) •
